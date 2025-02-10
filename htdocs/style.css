@@ -1,0 +1,70 @@
+:root {--s: default;}
+body{
+    font-size: var(--s);
+    background-color: black;
+    color: white;
+}
+fieldset{
+    display: inline-block;
+    border-radius: 15px;
+}
+input{
+    font-size: var(--s);
+}/*
+.arabic{
+    position: var(--position);
+}
+.french{
+    position: var(--position);
+    margin-top: var(--top-17);
+}
+.english{
+    position: var(--position);
+    margin-top: var(--top-34);
+}
+.history{
+    position: var(--position);
+    margin-left: var(--left-15);
+    margin-top: var(--top-17);
+}
+.geo{
+    position: var(--position);
+    margin-left: var(--left-15);
+}
+.phy{
+    position: var(--position);
+    margin-left: var(--left-15);
+    margin-top: var(--top-34);
+}
+.math{
+    position: var(--position);
+    margin-left: var(--left-30);
+}
+.prog{
+    position: var(--position);
+    margin-left: var(--left-30);
+    margin-top: var(--top-17);
+}
+.sti{
+    position: var(--position);
+    margin-left: var(--left-30);
+    margin-top: var(--top-34);
+}
+.sport{
+    position: var(--position);
+    margin-left: var(--left-45);
+    margin-top: var(--top-17);
+}
+.filo{
+    position: var(--position);
+    margin-left: var(--left-45);
+    margin-top: var(--top-34);
+}
+.decin{
+    position: var(--position);
+    margin-left: var(--left-45);
+}
+.moyen{
+    position: var(--position);
+    margin-left: var(--left-60);
+}
