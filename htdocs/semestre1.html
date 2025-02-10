@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Moyen</title>
+        <link rel="stylesheet" type="text/css" href="style.css"/>
+        <script>
+            var root = document.querySelector(':root');
+            if (screen.width <= 400) {root.style.setProperty('--s', "xxx-large")}
+            else if (screen.width >= 400 && screen.width <= 1000) {root.style.setProperty('--s', "xxx-large")}
+            function moyen()
+            {
+                document.getElementById('moyen').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('math').innerHTML.slice(6,11))*3+(parseFloat(document.getElementById('info').innerHTML.slice(6,11))*3.5)+(parseFloat(document.getElementById('seg').innerHTML.slice(6,11))*3.5)+(parseFloat(document.getElementById('lm').innerHTML.slice(6,11))*3)+(parseFloat(document.getElementById('lang').innerHTML.slice(6,11))*2))/15).slice(0,5);
+            }
+        </script>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-9M9G3NMX3R"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-9M9G3NMX3R');
+        </script>
+    </head>
+    <body>
+        <fieldset style="position: absolute;font-size: var(--s);" onclick="location.href='semestre2'">
+            <button style="font-size: var(--s);color: white;background-color: black;border-radius: 10px;border: none" onclick="location.href='semestre2'">2eme Semestre</button>
+        </fieldset>
+        <form>
+            <!--<a href="https://ltcautomining.com/?ref=nxte"><img style="position: absolute;margin-top: 4%;" src="https://ltcautomining.com/styles/images/160x600.gif" alt="" width="160" height="600" /></a>-->
+            <center>
+            <fieldset>
+                <div id="moyen">moyen:0</div>
+            </fieldset><br>
+            <fieldset>
+                <legend>mathematique</legend>
+                <div id="math">moyen:0</div>
+            <fieldset>
+                <legend>Analyse</legend>
+                <p>ds<input type="number" max="20" min="0" value="0" step="0.25" id="dsa" onKeyUp="document.getElementById('ana').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('dsa').value)*0.3+parseFloat(document.getElementById('exa').value)*0.7)).slice(0,5);document.getElementById('math').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('ana').innerHTML.slice(6,11))*1.5)+(parseFloat(document.getElementById('al').innerHTML.slice(6,11))*1.5))/3).slice(0,5); moyen();" autofocus></p>
+                <p>examen<input type="number" max="20" min="0" value="0" step="0.25" id="exa" onKeyUp="document.getElementById('ana').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('dsa').value)*0.3+parseFloat(document.getElementById('exa').value)*0.7)).slice(0,5);document.getElementById('math').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('ana').innerHTML.slice(6,11))*1.5)+(parseFloat(document.getElementById('al').innerHTML.slice(6,11))*1.5))/3).slice(0,5); moyen();"></p>
+                <div id="ana">moyen:0</div>
+            </fieldset>
+            <fieldset>
+                <legend>algebre</legend>
+                <p>ds<input type="number" max="20" min="0" value="0" step="0.25" id="dsal" onKeyUp="document.getElementById('al').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('dsal').value)*0.3+parseFloat(document.getElementById('exal').value)*0.7)).slice(0,5);document.getElementById('math').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('ana').innerHTML.slice(6,11))*1.5)+(parseFloat(document.getElementById('al').innerHTML.slice(6,11))*1.5))/3).slice(0,5); moyen();"></p>
+                <p>examen<input type="number" max="20" min="0" value="0" step="0.25" id="exal" onKeyUp="document.getElementById('al').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('dsal').value)*0.3+parseFloat(document.getElementById('exal').value)*0.7)).slice(0,5);document.getElementById('math').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('ana').innerHTML.slice(6,11))*1.5)+(parseFloat(document.getElementById('al').innerHTML.slice(6,11))*1.5))/3).slice(0,5); moyen();"></p>
+                <div id="al">moyen:0</div>
+            </fieldset></fieldset>
+            <fieldset><legend>algorithmique & programmation</legend>
+                <div id="info">moyen:0</div>
+            <fieldset>
+                <legend>algorithme</legend>
+                <p>ds<input type="number" max="20" min="0" value="0" step="0.25" id="dsalo" onKeyUp="document.getElementById('alo').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('dsalo').value)*0.3+parseFloat(document.getElementById('exalo').value)*0.7)).slice(0,5);document.getElementById('info').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('prog').innerHTML.slice(6,11))*1.5)+(parseFloat(document.getElementById('alo').innerHTML.slice(6,11))*2))/3.5).slice(0,5); moyen();"></p>
+                <p>examen<input type="number" max="20" min="0" value="0" step="0.25" id="exalo" onKeyUp="document.getElementById('alo').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('dsalo').value)*0.3+parseFloat(document.getElementById('exalo').value)*0.7)).slice(0,5);document.getElementById('info').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('prog').innerHTML.slice(6,11))*1.5)+(parseFloat(document.getElementById('alo').innerHTML.slice(6,11))*2))/3.5).slice(0,5); moyen();"></p>
+                <div id="alo">moyen:0</div>
+            </fieldset>
+            <fieldset>
+                <legend>programmation</legend>
+                <p>ds<input type="number" max="20" min="0" value="0" step="0.25" id="dsprog" onKeyUp="document.getElementById('prog').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('dsprog').value)*0.15+parseFloat(document.getElementById('exaprog').value)*0.7+parseFloat(document.getElementById('tpprog').value)*0.15)).slice(0,5);document.getElementById('info').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('prog').innerHTML.slice(6,11))*1.5)+(parseFloat(document.getElementById('alo').innerHTML.slice(6,11))*2))/3.5).slice(0,5); moyen();"></p>
+                <p>examen<input type="number" max="20" min="0" value="0" step="0.25" id="exaprog" onKeyUp="document.getElementById('prog').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('dsprog').value)*0.15+parseFloat(document.getElementById('exaprog').value)*0.7+parseFloat(document.getElementById('tpprog').value)*0.15)).slice(0,5);document.getElementById('info').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('prog').innerHTML.slice(6,11))*1.5)+(parseFloat(document.getElementById('alo').innerHTML.slice(6,11))*2))/3.5).slice(0,5); moyen();"></p>
+                <p>tp<input type="number" max="20" min="0" value="0" step="0.25" id="tpprog" onKeyUp="document.getElementById('prog').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('dsprog').value)*0.15+parseFloat(document.getElementById('exaprog').value)*0.7+parseFloat(document.getElementById('tpprog').value)*0.15)).slice(0,5);document.getElementById('info').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('prog').innerHTML.slice(6,11))*1.5)+(parseFloat(document.getElementById('alo').innerHTML.slice(6,11))*2))/3.5).slice(0,5); moyen();"></p>
+                <div id="prog">moyen:0</div>
+            </fieldset></fieldset>
+            <fieldset><legend>systemes d'exploitation et architecture</legend>
+                <div id="seg">moyen:0</div>
+            <fieldset>
+                <legend>systemes d'exploitation</legend>
+                <p>ds<input type="number" max="20" min="0" value="0" step="0.25" id="dsse" onKeyUp="document.getElementById('se').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('dsse').value)*0.15+parseFloat(document.getElementById('exase').value)*0.7+parseFloat(document.getElementById('tpse').value)*0.15)).slice(0,5);document.getElementById('seg').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('se').innerHTML.slice(6,11))*1.5)+(parseFloat(document.getElementById('sl').innerHTML.slice(6,11))*2))/3.5).slice(0,5); moyen();"></p>
+                <p>examen</p><input type="number" max="20" min="0" value="0" step="0.25" id="exase" onKeyUp="document.getElementById('se').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('dsse').value)*0.15+parseFloat(document.getElementById('exase').value)*0.7+parseFloat(document.getElementById('tpse').value)*0.15)).slice(0,5);document.getElementById('seg').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('se').innerHTML.slice(6,11))*1.5)+(parseFloat(document.getElementById('sl').innerHTML.slice(6,11))*2))/3.5).slice(0,5); moyen();"></p>
+                <p>tp<input type="number" max="20" min="0" value="0" step="0.25" id="tpse" onKeyUp="document.getElementById('se').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('dsse').value)*0.15+parseFloat(document.getElementById('exase').value)*0.7+parseFloat(document.getElementById('tpse').value)*0.15)).slice(0,5);document.getElementById('seg').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('se').innerHTML.slice(6,11))*1.5)+(parseFloat(document.getElementById('sl').innerHTML.slice(6,11))*2))/3.5).slice(0,5); moyen();"></p>
+                <div id="se">moyen:0</div>
+            </fieldset>
+            <fieldset>
+                <legend>systemes logique</legend>
+                <p>ds<input type="number" max="20" min="0" value="0" step="0.25" id="dssl" onKeyUp="document.getElementById('sl').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('dssl').value)*0.15+parseFloat(document.getElementById('examensl').value)*0.7+parseFloat(document.getElementById('tpsl').value)*0.15)).slice(0,5);document.getElementById('seg').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('se').innerHTML.slice(6,11))*1.5)+(parseFloat(document.getElementById('sl').innerHTML.slice(6,11))*2))/3.5).slice(0,5); moyen();"></p>
+                <p>examen<input type="number" max="20" min="0" value="0" step="0.25" id="examensl" onKeyUp="document.getElementById('sl').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('dssl').value)*0.15+parseFloat(document.getElementById('examensl').value)*0.7+parseFloat(document.getElementById('tpsl').value)*0.15)).slice(0,5);document.getElementById('seg').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('se').innerHTML.slice(6,11))*1.5)+(parseFloat(document.getElementById('sl').innerHTML.slice(6,11))*2))/3.5).slice(0,5); moyen();"></p>
+                <p>tp<input type="number" max="20" min="0" value="0" step="0.25" id="tpsl" onKeyUp="document.getElementById('sl').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('dssl').value)*0.15+parseFloat(document.getElementById('examensl').value)*0.7+parseFloat(document.getElementById('tpsl').value)*0.15)).slice(0,5);document.getElementById('seg').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('se').innerHTML.slice(6,11))*1.5)+(parseFloat(document.getElementById('sl').innerHTML.slice(6,11))*2))/3.5).slice(0,5); moyen();"></p>
+                <div id="sl">moyen:0</div>
+            </fieldset></fieldset>
+            <fieldset><legend>logique et multimedia</legend>
+                <div id="lm">moyen:0</div>
+            <fieldset>
+                <legend>logique formelle</legend>
+                <p>ds<input type="number" max="20" min="0" value="0" step="0.25" id="dslf" onKeyUp="document.getElementById('lf').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('dslf').value)*0.3+parseFloat(document.getElementById('exalf').value)*0.7)).slice(0,5);document.getElementById('lm').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('lf').innerHTML.slice(6,11))*1.5)+(parseFloat(document.getElementById('mm').innerHTML.slice(6,11))*1.5))/3).slice(0,5); moyen();"></p>
+                <p>examen<input type="number" max="20" min="0" value="0" step="0.25" id="exalf" onKeyUp="document.getElementById('lf').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('dslf').value)*0.3+parseFloat(document.getElementById('exalf').value)*0.7)).slice(0,5);document.getElementById('lm').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('lf').innerHTML.slice(6,11))*1.5)+(parseFloat(document.getElementById('mm').innerHTML.slice(6,11))*1.5))/3).slice(0,5); moyen();"></p>
+                <div id="lf">moyen:0</div>
+            </fieldset>
+            <fieldset>
+                <legend>technologies multimedia</legend>
+                <p>ds<input type="number" max="20" min="0" value="0" step="0.25" id="dsmm" onKeyUp="document.getElementById('mm').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('dsmm').value)*0.15+parseFloat(document.getElementById('examm').value)*0.7+parseFloat(document.getElementById('tpmm').value)*0.15)).slice(0,5);document.getElementById('lm').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('lf').innerHTML.slice(6,11))*1.5)+(parseFloat(document.getElementById('mm').innerHTML.slice(6,11))*1.5))/3).slice(0,5); moyen();"></p>
+                <p>examen<input type="number" max="20" min="0" value="0" step="0.25" id="examm" onKeyUp="document.getElementById('mm').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('dsmm').value)*0.15+parseFloat(document.getElementById('examm').value)*0.7+parseFloat(document.getElementById('tpmm').value)*0.15)).slice(0,5);document.getElementById('lm').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('lf').innerHTML.slice(6,11))*1.5)+(parseFloat(document.getElementById('mm').innerHTML.slice(6,11))*1.5))/3).slice(0,5); moyen();"></p>
+                <p>tp<input type="number" max="20" min="0" value="0" step="0.25" id="tpmm" onKeyUp="document.getElementById('mm').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('dsmm').value)*0.15+parseFloat(document.getElementById('examm').value)*0.7+parseFloat(document.getElementById('tpmm').value)*0.15)).slice(0,5);document.getElementById('lm').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('lf').innerHTML.slice(6,11))*1.5)+(parseFloat(document.getElementById('mm').innerHTML.slice(6,11))*1.5))/3).slice(0,5); moyen();"></p>
+                <div id="mm">moyen:0</div>
+            </fieldset></fieldset>
+            <fieldset><legend>langue</legend>
+                <div id="lang">moyen:0</div>
+                <fieldset>
+                <legend>Anglias</legend>
+                <p>oral<input type="number" max="20" min="0" value="0" step="0.25" id="oralang" onKeyUp="document.getElementById('ang').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('oralang').value)*0.2+parseFloat(document.getElementById('dsang').value)*0.4+parseFloat(document.getElementById('exaang').value)*0.4)).slice(0,5);document.getElementById('lang').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('fr').innerHTML.slice(6,11)))+(parseFloat(document.getElementById('ang').innerHTML.slice(6,11))))/2).slice(0,5); moyen();">
+                <p>ds<input type="number" max="20" min="0" value="0" step="0.25" id="dsang" onKeyUp="document.getElementById('ang').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('oralang').value)*0.2+parseFloat(document.getElementById('dsang').value)*0.4+parseFloat(document.getElementById('exaang').value)*0.4)).slice(0,5);document.getElementById('lang').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('fr').innerHTML.slice(6,11)))+(parseFloat(document.getElementById('ang').innerHTML.slice(6,11))))/2).slice(0,5); moyen();"></p>
+                <p>ds<input type="number" max="20" min="0" value="0" step="0.25" id="exaang" onKeyUp="document.getElementById('ang').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('oralang').value)*0.2+parseFloat(document.getElementById('dsang').value)*0.4+parseFloat(document.getElementById('exaang').value)*0.4)).slice(0,5);document.getElementById('lang').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('fr').innerHTML.slice(6,11)))+(parseFloat(document.getElementById('ang').innerHTML.slice(6,11))))/2).slice(0,5); moyen();"></p>
+                <div id="ang">moyen:0
+            </fieldset>
+            <fieldset>
+                <legend>francias</legend>
+                <p>oral<input type="number" max="20" min="0" value="0" step="0.25" id="oralfr" onKeyUp="document.getElementById('fr').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('oralfr').value)*0.2+parseFloat(document.getElementById('dsfr').value)*0.4+parseFloat(document.getElementById('exafr').value)*0.4)).slice(0,5);document.getElementById('lang').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('fr').innerHTML.slice(6,11)))+(parseFloat(document.getElementById('ang').innerHTML.slice(6,11))))/2).slice(0,5); moyen();"></p>
+                <p>ds<input type="number" max="20" min="0" value="0" step="0.25" id="dsfr" onKeyUp="document.getElementById('fr').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('oralfr').value)*0.2+parseFloat(document.getElementById('dsfr').value)*0.4+parseFloat(document.getElementById('exafr').value)*0.4)).slice(0,5);document.getElementById('lang').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('fr').innerHTML.slice(6,11)))+(parseFloat(document.getElementById('ang').innerHTML.slice(6,11))))/2).slice(0,5); moyen();"></p>
+                <p>ds<input type="number" max="20" min="0" value="0" step="0.25" id="exafr" onKeyUp="document.getElementById('fr').innerHTML = 'moyen:'+String((parseFloat(document.getElementById('oralfr').value)*0.2+parseFloat(document.getElementById('dsfr').value)*0.4+parseFloat(document.getElementById('exafr').value)*0.4)).slice(0,5);document.getElementById('lang').innerHTML = 'moyen:'+String(((parseFloat(document.getElementById('fr').innerHTML.slice(6,11)))+(parseFloat(document.getElementById('ang').innerHTML.slice(6,11))))/2).slice(0,5); moyen();"></p>
+                <div id="fr">moyen:0</div>
+            </fieldset></fieldset>
+            <!--<a href="https://ltcautomining.com/?ref=nxte"><img style="padding-top: 3%;margin-left: 3%;" src="https://ltcautomining.com/styles/images/300x250.gif" alt="" width="300" height="250" /></a>-->
+        </form>
+        <br>
+    </body>
+</html>
