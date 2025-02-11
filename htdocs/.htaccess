@@ -1,7 +1,0 @@
-RewriteEngine On
-
-# Redirect to index.html if no file is specified
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^$ /semestre1.html [L]
-RewriteCond %{SCRIPT_FILENAME} !-d
-RewriteRule ^([^.]+)$ $1.html [NC,L]
