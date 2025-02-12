@@ -516,7 +516,7 @@ const LSIM1 = () => {
           {/* Mathématique */}
         <fieldset>
             <legend>Mathématique</legend>
-            <div className='section-overall'>Moyen : <b style={{ color: sem2_overall < 10 ? 'red' : 'green' }}>{format(sem2_math)}</b></div>
+            <div className='section-overall'>Moyen : <b style={{ color: sem2_math < 10 ? 'red' : 'green' }}>{format(sem2_math)}</b></div>
             <fieldset>
               <legend>Algèbre</legend>
               <p>
@@ -771,6 +771,9 @@ const LSIM1 = () => {
           {/* Fondements des bases de données */}
           <fieldset>
             <legend>Fondements des bases de données</legend>
+            <fieldset>
+            <legend>Fondements des bases de données</legend>
+            
             <p>
               ds{' '}
               <input
@@ -795,6 +798,7 @@ const LSIM1 = () => {
                 onChange={handleSem2Change}
               />
             </p>
+            </fieldset>
           </fieldset>
 
           {/* Langue */}
