@@ -136,6 +136,7 @@ const LSIM1 = () => {
                 <div className='section-overall'>Moyen : <b style={{ color: sem1_math < 10 ? 'red' : 'green' }}>{format(sem1_math)}</b></div>
                 <fieldset>
                 <legend>Algèbre</legend>
+                <div className='subject-average'>Moyen: <b style={{ color: sem1_algebre < 10 ? 'red' : 'green' }}>{format(sem1_algebre)}</b></div>
                 <p>
                     ds{' '}
                     <input
@@ -163,6 +164,7 @@ const LSIM1 = () => {
                 </fieldset>
                 <fieldset>
                 <legend>Analyse</legend>
+                <div className='subject-average'>Moyen: <b style={{ color: sem1_ana < 10 ? 'red' : 'green' }}>{format(sem1_ana)}</b></div>
                 <p>
                     ds{' '}
                     <input
@@ -196,6 +198,7 @@ const LSIM1 = () => {
                 <div className='section-overall'>Moyen : <b style={{ color: sem1_info < 10 ? 'red' : 'green' }}>{format(sem1_info)}</b></div>
                 <fieldset>
                 <legend>Algorithme</legend>
+                <div className='subject-average'>Moyen: <b style={{ color: sem1_alo < 10 ? 'red' : 'green' }}>{format(sem1_alo)}</b></div>
                 <p>
                     ds{' '}
                     <input
@@ -223,6 +226,7 @@ const LSIM1 = () => {
                 </fieldset>
                 <fieldset>
                 <legend>Programmation</legend>
+                <div className='subject-average'>Moyen: <b style={{ color: sem1_prog < 10 ? 'red' : 'green' }}>{format(sem1_prog)}</b></div>
                 <p>
                     ds{' '}
                     <input
@@ -268,6 +272,7 @@ const LSIM1 = () => {
                 <div className='section-overall'>Moyen : <b style={{ color: sem1_seg < 10 ? 'red' : 'green' }}>{format(sem1_seg)}</b></div>
                 <fieldset>
                 <legend>Systèmes d'exploitation</legend>
+                <div className='subject-average'>Moyen: <b style={{ color: sem1_se < 10 ? 'red' : 'green' }}>{format(sem1_se)}</b></div>
                 <p>
                     ds{' '}
                     <input
@@ -307,6 +312,7 @@ const LSIM1 = () => {
                 </fieldset>
                 <fieldset>
                 <legend>Systèmes logique</legend>
+                <div className='subject-average'>Moyen: <b style={{ color: sem1_sl < 10 ? 'red' : 'green' }}>{format(sem1_sl)}</b></div>
                 <p>
                     ds{' '}
                     <input
@@ -352,6 +358,7 @@ const LSIM1 = () => {
                 <div className='section-overall'>Moyen : <b style={{ color: sem1_lm < 10 ? 'red' : 'green' }}>{format(sem1_lm)}</b></div>
                 <fieldset>
                 <legend>Logique formelle</legend>
+                <div className='subject-average'>Moyen: <b style={{ color: sem1_lf < 10 ? 'red' : 'green' }}>{format(sem1_lf)}</b></div>
                 <p>
                     ds{' '}
                     <input
@@ -379,6 +386,7 @@ const LSIM1 = () => {
                 </fieldset>
                 <fieldset>
                 <legend>Technologies multimédia</legend>
+                <div className='subject-average'>Moyen: <b style={{ color: sem1_mm < 10 ? 'red' : 'green' }}>{format(sem1_mm)}</b></div>
                 <p>
                     ds{' '}
                     <input
@@ -424,6 +432,7 @@ const LSIM1 = () => {
                 <div className='section-overall'>Moyen : <b style={{ color: sem1_lang < 10 ? 'red' : 'green' }}>{format(sem1_lang)}</b></div>
                 <fieldset>
                 <legend>Anglais</legend>
+                <div className='subject-average'>Moyen: <b style={{ color: sem1_ang < 10 ? 'red' : 'green' }}>{format(sem1_ang)}</b></div>
                 <p>
                     oral{' '}
                     <input
@@ -463,6 +472,7 @@ const LSIM1 = () => {
                 </fieldset>
                 <fieldset>
                 <legend>Français</legend>
+                <div className='subject-average'>Moyen: <b style={{ color: sem1_fr < 10 ? 'red' : 'green' }}>{format(sem1_fr)}</b></div>
                 <p>
                     oral{' '}
                     <input
@@ -519,6 +529,7 @@ const LSIM1 = () => {
             <div className='section-overall'>Moyen : <b style={{ color: sem2_math < 10 ? 'red' : 'green' }}>{format(sem2_math)}</b></div>
             <fieldset>
               <legend>Algèbre</legend>
+              <div className='subject-average'>Moyen: <b style={{ color: sem2_algebre < 10 ? 'red' : 'green' }}>{format(sem2_algebre)}</b></div>
               <p>
                 ds{' '}
                 <input
@@ -546,6 +557,7 @@ const LSIM1 = () => {
             </fieldset>
             <fieldset>
               <legend>Analyse</legend>
+              <div className='subject-average'>Moyen: <b style={{ color: sem2_ana < 10 ? 'red' : 'green' }}>{format(sem2_ana)}</b></div>
               <p>
                 ds{' '}
                 <input
@@ -579,6 +591,7 @@ const LSIM1 = () => {
             <div className='section-overall'>Moyen : <b style={{ color: sem2_info < 10 ? 'red' : 'green' }}>{format(sem2_info)}</b></div>
             <fieldset>
               <legend>Algorithme</legend>
+              <div className='subject-average'>Moyen: <b style={{ color: sem2_alo < 10 ? 'red' : 'green' }}>{format(sem2_alo)}</b></div>
               <p>
                 ds{' '}
                 <input
@@ -606,6 +619,7 @@ const LSIM1 = () => {
             </fieldset>
             <fieldset>
               <legend>Programmation C</legend>
+              <div className='subject-average'>Moyen: <b style={{ color: sem2_prog < 10 ? 'red' : 'green' }}>{format(sem2_prog)}</b></div>
               <p>
                 ds{' '}
                 <input
@@ -645,6 +659,7 @@ const LSIM1 = () => {
             </fieldset>
             <fieldset>
               <legend>Programmation Python</legend>
+              <div className='subject-average'>Moyen: <b style={{ color: sem2_progp < 10 ? 'red' : 'green' }}>{format(sem2_progp)}</b></div>
               <p>
                 ds{' '}
                 <input
@@ -690,6 +705,7 @@ const LSIM1 = () => {
             <div className='section-overall'>Moyen : <b style={{ color: sem2_seg < 10 ? 'red' : 'green' }}>{format(sem2_seg)}</b></div>
             <fieldset>
               <legend>Systèmes d'exploitation</legend>
+              <div className='subject-average'>Moyen: <b style={{ color: sem2_se < 10 ? 'red' : 'green' }}>{format(sem2_se)}</b></div>
               <p>
                 ds{' '}
                 <input
@@ -729,6 +745,7 @@ const LSIM1 = () => {
             </fieldset>
             <fieldset>
               <legend>Fondements des réseaux</legend>
+              <div className='subject-average'>Moyen: <b style={{ color: sem2_sl < 10 ? 'red' : 'green' }}>{format(sem2_sl)}</b></div>
               <p>
                 ds{' '}
                 <input
@@ -773,7 +790,7 @@ const LSIM1 = () => {
             <legend>Fondements des bases de données</legend>
             <fieldset>
             <legend>Fondements des bases de données</legend>
-            
+            <div className='subject-average'>Moyen: <b style={{ color: sem2_lm < 10 ? 'red' : 'green' }}>{format(sem2_lm)}</b></div>
             <p>
               ds{' '}
               <input
@@ -807,6 +824,7 @@ const LSIM1 = () => {
             <div className='section-overall'>Moyen : <b style={{ color: sem2_lang < 10 ? 'red' : 'green' }}>{format(sem2_lang)}</b></div>
             <fieldset>
               <legend>Anglais</legend>
+              <div className='subject-average'>Moyen: <b style={{ color: sem2_ang < 10 ? 'red' : 'green' }}>{format(sem2_ang)}</b></div>
               <p>
                 oral{' '}
                 <input
@@ -846,6 +864,7 @@ const LSIM1 = () => {
             </fieldset>
             <fieldset>
               <legend>Français</legend>
+              <div className='subject-average'>Moyen: <b style={{ color: sem2_fr < 10 ? 'red' : 'green' }}>{format(sem2_fr)}</b></div>
               <p>
                 oral{' '}
                 <input
@@ -885,6 +904,7 @@ const LSIM1 = () => {
             </fieldset>
             <fieldset>
               <legend>Culture et compétence numérique</legend>
+              <div className='subject-average'>Moyen: <b style={{ color: sem2_frr < 10 ? 'red' : 'green' }}>{format(sem2_frr)}</b></div>
               <p>
                 oral{' '}
                 <input

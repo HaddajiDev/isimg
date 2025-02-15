@@ -241,3 +241,12 @@ p input {
   margin-top: 20px;
   color: darkgray;
 }
+
+.subject-average {
+  margin: 5px 0;
+  padding: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+}
