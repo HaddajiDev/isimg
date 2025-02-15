@@ -16,7 +16,7 @@ function Home() {
                 </div>
             </div>        
         </div>
-        <p className='credits'>{new Date().getFullYear()} Made by Ghaith Belhassen and Ahmed Haddaji</p>
+        <p className='credits'>© {new Date().getFullYear()} Made by Ghaith Belhassen and Ahmed Haddaji</p>
     </div>
   )
 }

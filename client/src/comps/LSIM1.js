@@ -932,7 +932,7 @@ const LSIM1 = () => {
         <legend>Moyenne Générale de l'année</legend>
         <div id="final-overall">{format(finalOverall)}</div>
       </fieldset>
-      <p className='credits'>{new Date().getFullYear()} Made by Ghaith Belhassen and Ahmed Haddaji</p>
+      <p className='credits'>© {new Date().getFullYear()} Made by Ghaith Belhassen and Ahmed Haddaji</p>
     </div>
     
   );

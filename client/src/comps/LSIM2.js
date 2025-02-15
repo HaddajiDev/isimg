@@ -182,7 +182,7 @@ const LSIM2 = () => {
         </div>
       </fieldset>
 
-      <p className='credits'>{new Date().getFullYear()} Made by Ghaith Belhassen and Ahmed Haddaji</p>
+      <p className='credits'>© {new Date().getFullYear()} Made by Ghaith Belhassen and Ahmed Haddaji</p>
     </div>
   );
 };
