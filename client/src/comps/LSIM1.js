@@ -458,7 +458,7 @@ const LSIM1 = () => {
                     />
                 </p>
                 <p>
-                    examen{' '}
+                    ds 2{' '}
                     <input
                     type="number"
                     id="exaang"
@@ -498,7 +498,7 @@ const LSIM1 = () => {
                     />
                 </p>
                 <p>
-                    examen{' '}
+                    ds 2{' '}
                     <input
                     type="number"
                     id="exafr"
@@ -850,7 +850,7 @@ const LSIM1 = () => {
                 />
               </p>
               <p>
-                examen{' '}
+                ds 2{' '}
                 <input
                   type="number"
                   id="exaang"
@@ -890,7 +890,7 @@ const LSIM1 = () => {
                 />
               </p>
               <p>
-                examen{' '}
+                ds 2{' '}
                 <input
                   type="number"
                   id="exafr"
@@ -930,7 +930,7 @@ const LSIM1 = () => {
                 />
               </p>
               <p>
-                examen{' '}
+                ds 2{' '}
                 <input
                   type="number"
                   id="exafrr"
