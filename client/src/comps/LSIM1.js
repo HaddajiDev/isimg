@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import './lsim1.css';
+import { getData } from '../redux/FileSlice';
+import FileUploadModal from './FileUploadModal';
 
 const LSIM1 = () => {
   const [activeSemester, setActiveSemester] = useState('sem1');
@@ -99,11 +102,23 @@ const LSIM1 = () => {
 
   const format = (val) => Number(val).toFixed(2);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+
+
   return (
     <div className="container">
       <header>
         <h1>LSIM 1</h1>
+        <button onClick={() => setIsModalOpen(true)}>
+            AI thing
+          </button> 
         <div className="switch-container">
+                     
+          <FileUploadModal 
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}            
+          />
           <button
             className={activeSemester === 'sem1' ? 'active' : ''}
             onClick={() => setActiveSemester('sem1')}
