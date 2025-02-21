@@ -38,7 +38,7 @@ const FileUploadModal = ({ isOpen, onClose }) => {
     try {
       const compressedFiles = await Promise.all(
         files.map(file =>
-          imageCompression(file, { maxSizeMB: 1 })
+          imageCompression(file, { maxSizeMB: 1.5 })
         )
       );
       const formData = new FormData();
