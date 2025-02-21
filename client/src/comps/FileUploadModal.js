@@ -42,6 +42,7 @@ const FileUploadModal = ({ isOpen, onClose, onUpload }) => {
       formData.append('file', file);
       
       await dispatch(getData(formData)).unwrap();
+      setFile(null);
       onClose();
       
     } catch (err) {

@@ -110,7 +110,9 @@ const LSIM1 = () => {
     data.forEach(subject => {
       Object.entries(subject).forEach(([key, value]) => {
         if (key !== 'subject' && newSem1.hasOwnProperty(key)) {
-          newSem1[key] = value;
+          if(newSem1[key] === 0){
+            newSem1[key] = value;
+          }          
         }
       });
     });
