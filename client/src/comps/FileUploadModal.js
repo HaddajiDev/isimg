@@ -88,7 +88,7 @@ const FileUploadModal = ({ isOpen, onClose }) => {
                   <p>Drop the images here</p>
                 ) : (
                   <>
-                    <p>Drag & drop at least two images</p>
+                    <p>Drag & drop at least 3 images</p>
                     <p className="secondary-text">or</p>
                     <button className="browse-btn">Browse Files</button>
                   </>
