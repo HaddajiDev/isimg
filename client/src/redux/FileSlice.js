@@ -30,7 +30,7 @@ export const FileSlice = createSlice({
         builder
 
         .addCase(getData.fulfilled, (state, action) => {
-            state.data = action.payload.data;
+            state.data = action.payload.ai;
         })
 
     }
