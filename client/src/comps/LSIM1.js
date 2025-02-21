@@ -146,12 +146,15 @@ const LSIM1 = () => {
           </button>
         </div>
         {activeSemester === 'sem1' && (
-          <button 
-            className="btn-new"
-            onClick={() => setIsModalOpen(true)}
-          >
-            Upload Screenshot            
-          </button>
+          <>
+            <button 
+              className="btn-new"
+              onClick={() => setIsModalOpen(true)}
+            >
+              Upload Screenshot (BETA)          
+            </button>
+            
+          </>
         )}
         <FileUploadModal 
             isOpen={isModalOpen}
