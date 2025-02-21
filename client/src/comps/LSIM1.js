@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import './lsim1.css';
+import { getData } from '../redux/FileSlice';
+import FileUploadModal from './FileUploadModal';
 
 const LSIM1 = () => {
   const [activeSemester, setActiveSemester] = useState('sem1');
@@ -99,6 +102,29 @@ const LSIM1 = () => {
 
   const format = (val) => Number(val).toFixed(2);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const data = useSelector(state => state.file.data);  
+
+  const loadDataIntoInputs = (data) => {
+    const newSem1 = { ...sem1 };
+    data.forEach(subject => {
+      Object.entries(subject).forEach(([key, value]) => {
+        if (key !== 'subject' && newSem1.hasOwnProperty(key)) {
+          newSem1[key] = value;
+        }
+      });
+    });
+    setSem1(newSem1);
+  };
+
+  useEffect(() => {
+    if(data){
+      const initialData = JSON.parse(data);
+      loadDataIntoInputs(initialData);
+      
+    }
+  }, [data]);
+
   return (
     <div className="container">
       <header>
@@ -117,8 +143,19 @@ const LSIM1 = () => {
             2ème Semestre
           </button>
         </div>
+        {activeSemester === 'sem1' && (
+          <button 
+            className="btn-new"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Upload Screenshot            
+          </button>
+        )}
+        <FileUploadModal 
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}            
+          />
       </header>
-
       {activeSemester === 'sem1' && (
         <form className="form-container">
           <fieldset className="fieldset-result">
