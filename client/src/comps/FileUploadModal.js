@@ -1,36 +1,13 @@
 import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import './modal.css'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getData } from '../redux/FileSlice';
 
 const FileUploadModal = ({ isOpen, onClose, onUpload }) => {
   const [file, setFile] = useState(null);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
-
-//   const dispatch = useDispatch();
-//   const [selectedFile, setSelectedFile] = useState(null);
-//   const [file, setFile] = useState(null);
-
-//   const handleFileChange = (e) => {
-//     setFile(e.target.files[0]);
-//     setSelectedFile(e.target.files[0]);
-//   };
-
-//   const handleUpload = async () => {
-//     if (!selectedFile) return;
-  
-//     const formData = new FormData();
-//     formData.append('file', file);
-  
-//     try {
-//       await dispatch(getData({file : formData})).unwrap();
-//     } catch (error) {
-//       console.error('Upload error:', error);
-//     }
-//   };
 
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
     setError('');
@@ -56,7 +33,6 @@ const FileUploadModal = ({ isOpen, onClose, onUpload }) => {
   });
 
   const dispatch = useDispatch();
-
   const handleUpload = async () => {
     if (!file) return;
     
@@ -67,6 +43,7 @@ const FileUploadModal = ({ isOpen, onClose, onUpload }) => {
       
       await dispatch(getData(formData)).unwrap();
       onClose();
+      
     } catch (err) {
       setError(err.message);
     }

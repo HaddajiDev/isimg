@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 
-const URL = `${process.env.REACT_APP_BACK}/api/data`
+const URL = `https://isimg-pre-back.vercel.app/api/data`
 
 export const getData = createAsyncThunk('data/get', async (formData) => {
     try {
@@ -27,7 +27,12 @@ export const FileSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        
+        builder
+
+        .addCase(getData.fulfilled, (state, action) => {
+            state.data = action.payload.data;
+        })
+
     }
 });
 

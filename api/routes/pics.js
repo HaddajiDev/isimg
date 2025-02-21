@@ -32,7 +32,7 @@ module.exports = (db, bucket) => {
             .on('finish', async () => {
               try {
                 const data = await GetData(uploadStream);
-                res.status(200).json({ data: data });
+                res.status(200).send({ ai: data });
               } catch (error) {
                 console.error('AI Processing error:', error);
                 res.status(500).json({ error: "AI processing failed" });
@@ -75,7 +75,7 @@ module.exports = (db, bucket) => {
 
 async function GetData(uploadStream) {
     try {
-        const userInput = `extract data | ${BACK}/api/inspect/${uploadStream.id}`;
+        const userInput = `extract data | https://isimg-pre-back.vercel.app/api/inspect/${uploadStream.id}`;
 
         const messages = [{
             role: "system",
