@@ -17,34 +17,39 @@ const BACK = process.env.BACK;
   
 
 module.exports = (db, bucket) => {
-    router.post('/data', upload.single('file'), async (req, res) => {    
-        try {
-          if (!req.file) return res.status(400).send('No file uploaded');
-      
-          const readableStream = Readable.from(req.file.buffer);
-          const uploadStream = bucket.openUploadStream(req.file.originalname);
-      
-          readableStream.pipe(uploadStream)
-            .on('error', (error) => {
-              console.error('Upload error:', error);
-              return res.status(500).send("File upload failed");
-            })
-            .on('finish', async () => {
-              try {
-                const data = await GetData(uploadStream);
-                res.status(200).send({ ai: data });
-              } catch (error) {
-                console.error('AI Processing error:', error);
-                res.status(500).json({ error: "AI processing failed" });
-              }
-            });
-        } catch (error) {
-          console.error('Server error:', error);
-          res.status(500).json({ error: "Internal server error" });
+    router.post('/data', upload.array('files'), async (req, res) => {    
+        if (!req.files || req.files.length === 0) {
+            return res.status(400).json({ error: "No files uploaded" });
         }
-      });
+        
+        try {    
+            const uploadPromises = req.files.map(file => {
+                return new Promise((resolve, reject) => {
+                    const readableStream = Readable.from(file.buffer);
+                    const uploadStream = bucket.openUploadStream(file.originalname);
+    
+                    readableStream.pipe(uploadStream)
+                        .on('error', reject)
+                        .on('finish', () => resolve(uploadStream));
+                });
+            });
+    
+            const uploadStreams = await Promise.all(uploadPromises);
+            const urls = uploadStreams.map(us => 
+                `https://isimg-pre-back.vercel.app/api/inspect/${us.id}`
+            );
+    
+            const data = await GetData(urls);
+            res.status(200).send({ ai: data });
+    
+        } catch (error) {
+            console.error('Error:', error);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    });
+    
 
-      router.get('/inspect/:id', async(req, res) => {
+    router.get('/inspect/:id', async(req, res) => {
         try {
             const fileId = req.params.id;            
             const objectID = new ObjectId(fileId);
@@ -73,9 +78,9 @@ module.exports = (db, bucket) => {
     return router;
 }
 
-async function GetData(uploadStream) {
+async function GetData(urls) {
     try {
-        const userInput = `extract data | https://isimg-pre-back.vercel.app/api/inspect/${uploadStream.id}`;
+        const userInput = `extract data | ${urls.join(' | ')}`;
 
         const messages = [{
             role: "system",
@@ -83,18 +88,24 @@ async function GetData(uploadStream) {
         }];
 
         if (userInput.includes('|')) {
-            const [textPart, urlPart] = userInput.split('|');
+            const parts = userInput.split('|').map(p => p.trim());
+            const textPart = parts[0];
+            const urlParts = parts.slice(1);
+
+            const content = [
+                { type: "text", text: textPart }
+            ];
+
+            for (const url of urlParts) {
+                content.push({ 
+                    type: "image_url", 
+                    image_url: { url } 
+                });
+            }
+
             messages.push({
                 role: "user",
-                content: [
-                    { type: "text", text: textPart.trim() },
-                    { type: "image_url", image_url: { url: urlPart.trim() } }
-                ]
-            });
-        } else {
-            messages.push({
-                role: "user",
-                content: userInput
+                content: content
             });
         }
 
@@ -105,7 +116,6 @@ async function GetData(uploadStream) {
 
         const aiResponse = completion.choices[0].message.content;
         const finalResponse = aiResponse.replace(/```json|```/g, '');
-        console.log('AI Response:', finalResponse);
         return finalResponse;
 
     } catch (error) {
