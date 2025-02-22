@@ -19,7 +19,7 @@ export const getData = createAsyncThunk('data/get', async (formData, { rejectWit
 
 export const getDataPdf = createAsyncThunk('data/pdf', async ({formData, sem}, { rejectWithValue }) => {
   try {
-    const result = await axios.post(`https://isimg-pre-back.vercel.app/api/data/pdf?sem=${sem}`, {formData, sem}, {
+    const result = await axios.post(`https://isimg-pre-back.vercel.app/api/data/pdf?sem=${sem}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
