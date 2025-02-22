@@ -4,6 +4,7 @@ const OpenAi = require('openai');
 const { ObjectId } = require('mongodb');
 const multer = require('multer');
 const { Readable } = require('stream');
+const { processPdf } = require('../pdfConverter');
 const storage = multer.memoryStorage();
 const upload = multer({ storage });  
 
@@ -47,6 +48,37 @@ module.exports = (db, bucket) => {
             res.status(500).json({ error: "Internal server error" });
         }
     });
+
+    router.post('/data/pdf', upload.single('file'), async (req, res) => {
+
+        if (!req.file) {
+            return res.status(400).send("No file uploaded");
+        }
+
+        try {
+            const readableStream = new Readable();
+            readableStream.push(req.file.buffer);
+            readableStream.push(null);
+
+            const uploadStream = bucket.openUploadStream(req.file.originalname);
+
+            readableStream.pipe(uploadStream)
+                .on('error', (error) => {
+                    console.error('Error uploading file:', error);
+                    return res.status(500).send("File upload failed");
+                })
+                .on('finish', async() => {
+                    const url = `${process.env.BACK}/api/inspect/${uploadStream.id}`;
+                    const data = await processPdf(url, 1);
+                    res.status(200).send({pdf : data});
+                });
+
+        } catch (error) {
+            console.error('Error during file upload:', error);
+            res.status(500).send("Error during file upload");
+        }
+    });
+
     
 
     router.get('/inspect/:id', async(req, res) => {

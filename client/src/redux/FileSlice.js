@@ -17,6 +17,20 @@ export const getData = createAsyncThunk('data/get', async (formData, { rejectWit
   }
 });
 
+export const getDataPdf = createAsyncThunk('data/pdf', async (formData, { rejectWithValue }) => {
+  try {
+    const result = await axios.post(`https://isimg-pre-back.vercel.app/api/data/pdf`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return result.data;
+  } catch (error) {
+    console.error('Axios Error:', error.response?.data);
+    return rejectWithValue(error.response?.data || error.message);
+  }
+});
+
 
 const initialState = {
     data: null,
@@ -29,9 +43,11 @@ export const FileSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-
         .addCase(getData.fulfilled, (state, action) => {
             state.data = action.payload.ai;
+        })
+        .addCase(getDataPdf.fulfilled, (state, action) => {
+          state.data = action.payload.pdf;
         })
 
     }

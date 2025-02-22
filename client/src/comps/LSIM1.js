@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './lsim1.css';
 import { getData } from '../redux/FileSlice';
 import FileUploadModal from './FileUploadModal';
+import PdfFileUpload from './PdfFileUpload';
 
 const LSIM1 = () => {
   const [activeSemester, setActiveSemester] = useState('sem1');
@@ -157,6 +158,7 @@ const LSIM1 = () => {
     }
   }, [data]);  
 
+  const [isOpenPdf, setIsOpenPdf] = useState(false);
 
   return (
     <div className="container">
@@ -192,10 +194,22 @@ const LSIM1 = () => {
             )}
           </>
         )}
+        <br />
+
+        <button 
+              className="btn-new"
+              onClick={() => setIsOpenPdf(true)}
+            >
+              Upload PDF (BETA)          
+        </button> 
         <FileUploadModal 
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}            
-          />
+        />
+        <PdfFileUpload 
+          isOpen={isOpenPdf}
+         onClose={() => setIsOpenPdf(false)}/>
+        
       </header>
       {activeSemester === 'sem1' && (
         <form className="form-container">
