@@ -17,9 +17,9 @@ export const getData = createAsyncThunk('data/get', async (formData, { rejectWit
   }
 });
 
-export const getDataPdf = createAsyncThunk('data/pdf', async (formData, sem, { rejectWithValue }) => {
+export const getDataPdf = createAsyncThunk('data/pdf', async ({formData, sem}, { rejectWithValue }) => {
   try {
-    const result = await axios.post(`http://localhost:5000/api/data/pdf`, {formData, sem}, {
+    const result = await axios.post(`http://localhost:5000/api/data/pdf?sem=${sem}`, {formData, sem}, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }

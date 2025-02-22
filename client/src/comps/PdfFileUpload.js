@@ -40,7 +40,7 @@ const PdfFileUpload = ({ isOpen, onClose, sem }) => {
       const formData = new FormData();
       formData.append('file', file);
 
-      await dispatch(getDataPdf(formData, sem)).unwrap();
+      await dispatch(getDataPdf({formData: formData, sem: sem})).unwrap();
 
       setStatus('AI analysis...');
       await new Promise(resolve => setTimeout(resolve, 1500));

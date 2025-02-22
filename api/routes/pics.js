@@ -61,7 +61,7 @@ module.exports = (db, bucket) => {
             return res.status(400).send("No file uploaded");
         }
 
-        const { sem } = req.body;
+        const sem = req.query.sem;
 
         try {
             const readableStream = new Readable();
