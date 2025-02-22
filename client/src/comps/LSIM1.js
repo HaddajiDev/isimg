@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './lsim1.css';
 import { getData } from '../redux/FileSlice';
 import FileUploadModal from './FileUploadModal';
+import PdfFileUpload from './PdfFileUpload';
 
 const LSIM1 = () => {
   const [activeSemester, setActiveSemester] = useState('sem1');
@@ -144,12 +145,51 @@ const LSIM1 = () => {
       console.error('Data loading error:', err);
     }
   };
+
+
+  const loadDataIntoInputs_2 = (data) => {
+    try {
+      if (!Array.isArray(data)) {
+        throw new Error('Invalid data format: Expected an array of subjects');
+      }
+  
+      const newSem2 = { ...sem2 };
+      
+      data.forEach(subject => {
+        if (typeof subject !== 'object' || subject === null) {
+          throw new Error('Invalid subject format: Expected an object');
+        }
+  
+        Object.entries(subject).forEach(([key, value]) => {
+          if (key === 'subject') return;
+  
+          if (!newSem2.hasOwnProperty(key)) {
+            throw new Error(`Unknown property detected: ${key}`);
+          }
+  
+          if (typeof value !== 'number') {
+            throw new Error(`Invalid value type for ${key}: Expected number, got ${typeof value}`);
+          }
+  
+          if (newSem2[key] === 0) {
+            newSem2[key] = value;
+          }
+        });
+      });
+  
+      setSem2(newSem2);
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+      console.error('Data loading error:', err);
+    }
+  }
   
   useEffect(() => {
     if (data) {
       try {
         const initialData = JSON.parse(data);
-        loadDataIntoInputs(initialData);
+        activeSemester === "sem1" ? loadDataIntoInputs(initialData) : loadDataIntoInputs_2(initialData);
       } catch (parseError) {
         setError(`Invalid JSON format: ${parseError.message}`);
         console.error('JSON parsing error:', parseError);
@@ -157,6 +197,7 @@ const LSIM1 = () => {
     }
   }, [data]);  
 
+  const [isOpenPdf, setIsOpenPdf] = useState(false);
 
   return (
     <div className="container">
@@ -192,10 +233,24 @@ const LSIM1 = () => {
             )}
           </>
         )}
+        <br />
+
+        <button 
+              className="btn-new"
+              onClick={() => setIsOpenPdf(true)}
+            >
+              Upload PDF (BETA)          
+        </button> 
         <FileUploadModal 
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}            
-          />
+        />
+        <PdfFileUpload 
+          isOpen={isOpenPdf}
+          onClose={() => setIsOpenPdf(false)}
+          sem={activeSemester === "sem1" ? 1 : 2}
+         />
+        
       </header>
       {activeSemester === 'sem1' && (
         <form className="form-container">
