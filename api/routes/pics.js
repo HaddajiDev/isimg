@@ -4,7 +4,6 @@ const OpenAi = require('openai');
 const { ObjectId } = require('mongodb');
 const multer = require('multer');
 const { Readable } = require('stream');
-const { processPdf } = require('../pdfConverter');
 const storage = multer.memoryStorage();
 const upload = multer({ storage });  
 
@@ -18,6 +17,13 @@ const BACK = process.env.BACK;
   
 
 module.exports = (db, bucket) => {
+    
+    router.use((req, res, next) => {
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Range');
+        next();
+    });
+
     router.post('/data', upload.array('files'), async (req, res) => {    
         if (!req.files || req.files.length === 0) {
             return res.status(400).json({ error: "No files uploaded" });
@@ -68,8 +74,10 @@ module.exports = (db, bucket) => {
                     return res.status(500).send("File upload failed");
                 })
                 .on('finish', async() => {
-                    const url = `${process.env.BACK}/api/inspect/${uploadStream.id}`;
-                    const data = await processPdf(url, 1);
+                    const url = `http://localhost:5000/api/inspect/67ba04d2d3233412acbc8aef`;
+                    const response = await fetch(`http://127.0.0.1:2000?url=${url}&sem=1`);
+                    const data = response.json();
+                    console.log(response);
                     res.status(200).send({pdf : data});
                 });
 
@@ -79,30 +87,82 @@ module.exports = (db, bucket) => {
         }
     });
 
-    
-
-    router.get('/inspect/:id', async(req, res) => {
+    router.get('/inspect/:id', async (req, res) => {
         try {
-            const fileId = req.params.id;            
-            const objectID = new ObjectId(fileId);
-
-                const downloadStream = bucket.openDownloadStream(objectID);
-
-                downloadStream.on('data', (chunk) => {
-                    res.write(chunk);
-                });
-
-                downloadStream.on('end', () => {
-                    res.end();
-                });
-
-                downloadStream.on('error', (err) => {
-                    res.status(404).send(`<h1>File not Found</h1>`);
-                });       
+            const fileId = req.params.id;
             
-
-        } catch (error) {            
-            res.status(500).send('Error downloading file.');
+            if (!ObjectId.isValid(fileId)) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Invalid file ID format'
+                });
+            }
+    
+            const objectID = new ObjectId(fileId);
+            
+            const files = await bucket.find({ _id: objectID }).toArray();
+            if (files.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    error: 'File not found'
+                });
+            }
+    
+            const fileMetadata = files[0];
+            
+            res.set({
+                'Content-Type': fileMetadata.contentType || 'application/octet-stream',
+                'Content-Length': fileMetadata.length,
+                'Content-Disposition': `inline; filename="${fileMetadata.filename}"`,                
+            });
+    
+            const downloadStream = bucket.openDownloadStream(objectID);
+    
+            if (req.headers.range) {
+                const range = req.headers.range;
+                const parts = range.replace(/bytes=/, "").split("-");
+                const start = parseInt(parts[0], 10);
+                const end = parts[1] ? parseInt(parts[1], 10) : fileMetadata.length - 1;
+    
+                if (start >= fileMetadata.length) {
+                    return res.status(416).json({
+                        success: false,
+                        error: 'Requested range not satisfiable'
+                    });
+                }
+    
+                res.status(206).set({
+                    'Content-Range': `bytes ${start}-${end}/${fileMetadata.length}`,
+                    'Accept-Ranges': 'bytes',
+                    'Content-Length': end - start + 1
+                });
+    
+                downloadStream.start(start);
+                downloadStream.end(end);
+            }
+    
+            downloadStream
+                .on('error', (err) => {
+                    console.error('Stream error:', err);
+                    if (!res.headersSent) {
+                        res.status(500).json({
+                            success: false,
+                            error: 'Error streaming file'
+                        });
+                    }
+                })
+                .pipe(res);
+    
+            req.on('close', () => {
+                downloadStream.destroy();
+            });
+    
+        } catch (error) {
+            console.error('Error in /inspect:', error);
+            res.status(500).json({
+                success: false,
+                error: error.message
+            });
         }
     });
 
