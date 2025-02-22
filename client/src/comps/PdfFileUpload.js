@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import './modal.css';
 import { getData, getDataPdf } from '../redux/FileSlice';
 
-const PdfFileUpload = ({ isOpen, onClose }) => {
+const PdfFileUpload = ({ isOpen, onClose, sem }) => {
   const [file, setFile] = useState(null);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -40,7 +40,7 @@ const PdfFileUpload = ({ isOpen, onClose }) => {
       const formData = new FormData();
       formData.append('file', file);
 
-      await dispatch(getDataPdf(formData)).unwrap();
+      await dispatch(getDataPdf(formData, sem)).unwrap();
 
       setStatus('AI analysis...');
       await new Promise(resolve => setTimeout(resolve, 1500));

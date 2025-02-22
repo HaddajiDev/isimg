@@ -61,6 +61,8 @@ module.exports = (db, bucket) => {
             return res.status(400).send("No file uploaded");
         }
 
+        const { sem } = req.body;
+
         try {
             const readableStream = new Readable();
             readableStream.push(req.file.buffer);
@@ -75,7 +77,7 @@ module.exports = (db, bucket) => {
                 })
                 .on('finish', async() => {
                     const url = `https://isimg-pre-back.vercel.app/api/inspect/${uploadStream.id}`;
-                    const response = await fetch(`https://isimg-python.vercel.app/extract?url=${encodeURIComponent(url)}&sem=1`);
+                    const response = await fetch(`https://isimg-python.vercel.app/extract?url=${encodeURIComponent(url)}&sem=${sem}`);
                     const data = await response.json();                    
                     res.status(200).send({pdf : JSON.stringify(data)});
                 });
