@@ -10,6 +10,10 @@ def download_pdf_from_url(url):
     response.raise_for_status()
     return BytesIO(response.content)
 
+@app.route('/', methods=['GET'])
+def hello():
+    return "Working"
+
 @app.route('/extract', methods=['GET'])
 def extract_grades():
     pdf_url = request.args.get('url')
