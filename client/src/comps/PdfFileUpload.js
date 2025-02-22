@@ -26,10 +26,7 @@ const PdfFileUpload = ({ isOpen, onClose, sem }) => {
   const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
     onDrop,
     accept: { 'application/pdf': ['.pdf'] },
-    multiple: false, 
-    minSize: 0,
-    maxSize: 10000000 / 2,
-    maxFiles: 1,
+    multiple: false,  
   });
 
   const handleUpload = async () => {
