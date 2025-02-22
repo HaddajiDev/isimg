@@ -107,12 +107,10 @@ def extract_grades():
         ]
 
         final_data = ""
-        if sem == 1 : final_data = data
+        if str(sem) == "1" : final_data = data
         else: final_data = data2
 
-        print(final_data)
-
-        return jsonify({"pdf" : final_data})
+        return final_data
 
     except requests.RequestException as e:
         return jsonify({"success": False, "error": f"Error downloading PDF: {str(e)}"}), 500

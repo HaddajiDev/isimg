@@ -17,7 +17,7 @@ const BACK = process.env.BACK;
   
 
 module.exports = (db, bucket) => {
-    
+
     router.use((req, res, next) => {
         res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Range');
@@ -74,11 +74,10 @@ module.exports = (db, bucket) => {
                     return res.status(500).send("File upload failed");
                 })
                 .on('finish', async() => {
-                    const url = `http://localhost:5000/api/inspect/67ba04d2d3233412acbc8aef`;
-                    const response = await fetch(`http://127.0.0.1:2000?url=${url}&sem=1`);
-                    const data = response.json();
-                    console.log(response);
-                    res.status(200).send({pdf : data});
+                    const url = `https://isimg-pre-back.vercel.app/api/inspect/${uploadStream.id}`;
+                    const response = await fetch(`http://127.0.0.1:2000/extract?url=${encodeURIComponent(url)}&sem=1`);
+                    const data = await response.json();                    
+                    res.status(200).send({pdf : JSON.stringify(data)});
                 });
 
         } catch (error) {
