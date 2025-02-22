@@ -74,6 +74,30 @@ module.exports = (db, bucket) => {
         }
     });
 
+    router.get('/download/:id', async (req, res) => {
+        try {
+            const fileId = req.params.id;
+            const objectID = new ObjectId(fileId);
+            const downloadStream = bucket.openDownloadStream(objectID);
+
+            downloadStream.on('data', (chunk) => {
+                res.write(chunk);
+            });
+
+            downloadStream.on('end', () => {
+                res.end();
+            });
+
+            downloadStream.on('error', (err) => {
+                console.error('Error downloading file:', err);
+                res.status(404).send('File not found.');
+            });
+
+        } catch (error) {
+            console.error('Error downloading file:', error);
+            res.status(500).send('Error downloading file.');
+        }
+    });
 
     return router;
 }
