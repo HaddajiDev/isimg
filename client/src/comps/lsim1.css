@@ -273,3 +273,61 @@ p input {
 .btn-new:active {
   transform: translateY(0);
 }
+
+
+.error-banner {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--danger);
+  color: var(--text);
+  padding: 1rem 2rem;
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  box-shadow: 0 4px 15px rgba(255, 118, 117, 0.25);
+  z-index: 2000;
+  animation: slideIn 0.3s ease-out;
+  max-width: 90%;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.error-banner button {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: inherit;
+  padding: 0.25rem 0.75rem;
+  border-radius: calc(var(--border-radius) - 2px);
+  cursor: pointer;
+  transition: var(--transition);
+  font-weight: 500;
+}
+
+.error-banner button:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+@media (max-width: 480px) {
+  .error-banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .error-banner button {
+    width: 100%;
+  }
+}

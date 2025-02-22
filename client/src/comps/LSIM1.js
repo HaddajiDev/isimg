@@ -105,27 +105,58 @@ const LSIM1 = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const data = useSelector(state => state.file.data);  
 
-  const loadDataIntoInputs = (data) => {
-    const newSem1 = { ...sem1 };
-    data.forEach(subject => {
-      Object.entries(subject).forEach(([key, value]) => {
-        if (key !== 'subject' && newSem1.hasOwnProperty(key)) {
-          if(newSem1[key] === 0){
-            newSem1[key] = value;
-          }          
-        }
-      });
-    });
-    setSem1(newSem1);
-  };
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    if(data){
-      const initialData = JSON.parse(data);
-      loadDataIntoInputs(initialData);
+  const loadDataIntoInputs = (data) => {
+    try {
+      if (!Array.isArray(data)) {
+        throw new Error('Invalid data format: Expected an array of subjects');
+      }
+  
+      const newSem1 = { ...sem1 };
       
+      data.forEach(subject => {
+        if (typeof subject !== 'object' || subject === null) {
+          throw new Error('Invalid subject format: Expected an object');
+        }
+  
+        Object.entries(subject).forEach(([key, value]) => {
+          if (key === 'subject') return;
+  
+          if (!newSem1.hasOwnProperty(key)) {
+            throw new Error(`Unknown property detected: ${key}`);
+          }
+  
+          if (typeof value !== 'number') {
+            throw new Error(`Invalid value type for ${key}: Expected number, got ${typeof value}`);
+          }
+  
+          if (newSem1[key] === 0) {
+            newSem1[key] = value;
+          }
+        });
+      });
+  
+      setSem1(newSem1);
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+      console.error('Data loading error:', err);
     }
-  }, [data]);
+  };
+  
+  useEffect(() => {
+    if (data) {
+      try {
+        const initialData = JSON.parse(data);
+        loadDataIntoInputs(initialData);
+      } catch (parseError) {
+        setError(`Invalid JSON format: ${parseError.message}`);
+        console.error('JSON parsing error:', parseError);
+      }
+    }
+  }, [data]);  
+
 
   return (
     <div className="container">
@@ -152,8 +183,13 @@ const LSIM1 = () => {
               onClick={() => setIsModalOpen(true)}
             >
               Upload Screenshot (BETA)          
-            </button>
-            
+            </button>            
+            {error && (
+              <div className="error-banner">
+                ⚠️ Error: {error}
+                <button onClick={() => setError(null)}>Dismiss</button>
+              </div>
+            )}
           </>
         )}
         <FileUploadModal 
