@@ -64,7 +64,7 @@ const FileUploadModal = ({ isOpen, onClose }) => {
       const targetTotalMB = 5;
       const fileCount = files.length;
       const upscaleTargets = { 1: 2500, 2: 2000, 3: 2000 };
-      const compressTargetsMB = { 1: 1.5, 2: 1.2, 3: 0.8 };
+      const compressTargetsMB = { 1: 1.5, 2: 1.5, 3: 1 };
 
       setStatus('Upscaling images...');
       const upscaledFiles = await Promise.all(
@@ -146,6 +146,7 @@ const FileUploadModal = ({ isOpen, onClose }) => {
         </div>
 
         <div className="modal-body">
+          <h3 style={{marginBottom: "10px"}}>65% Accuracy</h3>
           <div
             {...getRootProps()}
             className={`dropzone ${isDragActive ? 'active' : ''} ${isDragReject ? 'reject' : ''} ${error ? 'error' : ''}`}
@@ -161,17 +162,21 @@ const FileUploadModal = ({ isOpen, onClose }) => {
                 ))}
               </div>
             ) : (
-              <div className="drop-content">
-                <div className="upload-icon">📤</div>
-                {isDragActive ? (
-                  <p>Drop the images here</p>
-                ) : (
-                  <>
-                    <p>Drag & drop up to 3 images</p>
-                    <p className="secondary-text">or</p>
-                    <button className="browse-btn">Browse Files</button>
-                  </>
-                )}
+              <div>                
+                <div className="drop-content">                
+                  <div className="upload-icon">📤</div>
+                  {isDragActive ? (
+                    <>
+                    <p>Drop the images here</p>
+                    </>
+                  ) : (
+                    <>
+                      <p>Drag & drop up to 3 images or</p>
+                      <p className="secondary-text"></p>
+                      <button className="browse-btn">Browse Files</button>
+                    </>
+                  )}
+                </div>
               </div>
             )}
           </div>
