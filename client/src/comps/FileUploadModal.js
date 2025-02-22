@@ -52,6 +52,11 @@ const FileUploadModal = ({ isOpen, onClose }) => {
     setIsLoading(false);
   };
 
+  const _onClose = () => {
+    onClose();
+    setFiles([]);
+  }
+
   if (!isOpen) return null;
 
   return (
@@ -59,7 +64,7 @@ const FileUploadModal = ({ isOpen, onClose }) => {
       <div className="modal">
         <div className="modal-header">
           <h2>Upload Image</h2>
-          <button onClick={onClose} className="close-btn">&times;</button>
+          <button onClick={_onClose} className="close-btn">&times;</button>
         </div>
 
         <div className="modal-body">
@@ -100,7 +105,7 @@ const FileUploadModal = ({ isOpen, onClose }) => {
           {error && <div className="error-message">{error}</div>}
 
           <div className="modal-actions">
-            <button onClick={onClose} className="cancel-btn">Cancel</button>
+            <button onClick={_onClose} className="cancel-btn">Cancel</button>
             <button 
               onClick={handleUpload}
               className="upload-btn"
