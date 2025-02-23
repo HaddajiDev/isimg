@@ -78,6 +78,7 @@ module.exports = (db, bucket) => {
                 .on('finish', async() => {
                     const url = `https://isimg-pre-back.vercel.app/api/inspect/${uploadStream.id}`;
                     const response = await fetch(`https://isimg-python.vercel.app/extract?url=${encodeURIComponent(url)}&sem=${sem}`);
+                    // const response = await fetch(`http://127.0.0.1:2000/extract?url=${encodeURIComponent(url)}&sem=${sem}`);
                     const data = await response.json();                    
                     res.status(200).send({pdf : JSON.stringify(data)});
                 });
