@@ -366,3 +366,83 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+
+/* PDF Info Modal Specific Styles */
+.info-modal {
+  max-width: 500px;
+  background: var(--background);
+}
+
+.info-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.guide-image {
+  max-width: 300px;
+  height: auto;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--primary);
+  box-shadow: 0 4px 15px rgba(108, 92, 231, 0.25);
+}
+
+.guide-text {
+  text-align: left;
+  width: 100%;
+  padding: 0 1rem;
+  color: var(--text-secondary);
+}
+
+.guide-text p {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.guide-text p::before {
+  content: '•';
+  color: var(--primary);
+  position: absolute;
+  left: 0;
+}
+
+.ok-btn {
+  background: var(--primary);
+  color: var(--text);
+  border: none;
+  padding: 0.75rem 2.5rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.ok-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+/* Mobile Optimization */
+@media (max-width: 480px) {
+  .info-modal {
+    width: 95%;
+  }
+  
+  .guide-image {
+    max-width: 200px;
+  }
+  
+  .guide-text {
+    font-size: 0.9rem;
+    padding: 0;
+  }
+  
+  .guide-text p {
+    padding-left: 1rem;
+  }
+}

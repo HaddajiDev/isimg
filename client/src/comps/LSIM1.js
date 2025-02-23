@@ -4,6 +4,7 @@ import './lsim1.css';
 import { getData } from '../redux/FileSlice';
 import FileUploadModal from './FileUploadModal';
 import PdfFileUpload from './PdfFileUpload';
+import PdfInfoModal from './PdfInfoModal';
 
 const LSIM1 = () => {
   const [activeSemester, setActiveSemester] = useState('sem1');
@@ -198,6 +199,7 @@ const LSIM1 = () => {
   }, [data]);  
 
   const [isOpenPdf, setIsOpenPdf] = useState(false);
+  const [showPdfInfo, setShowPdfInfo] = useState(false);
 
   return (
     <div className="container">
@@ -205,12 +207,14 @@ const LSIM1 = () => {
         <h1>LSIM 1</h1>
         <div className="switch-container">
           <button
+          style={{border: "1px solid #6c5ce7"}}
             className={activeSemester === 'sem1' ? 'active' : ''}
             onClick={() => setActiveSemester('sem1')}
           >
             1er Semestre
           </button>
           <button
+          style={{border: "1px solid #6c5ce7"}}
             className={activeSemester === 'sem2' ? 'active' : ''}
             onClick={() => setActiveSemester('sem2')}
           >
@@ -220,27 +224,29 @@ const LSIM1 = () => {
         {activeSemester === 'sem1' && (
           <>
             <button 
+              style={{marginTop: '30px'}}              
               className="btn-new"
               onClick={() => setIsModalOpen(true)}
             >
-              Upload Screenshot (BETA)          
+              <span>Upload Screenshot (BETA)</span>     
             </button>            
-            {error && (
-              <div className="error-banner">
-                ⚠️ Error: {error}
-                <button onClick={() => setError(null)}>Dismiss</button>
-              </div>
-            )}
           </>
         )}
         <br />
-
-        <button 
-              className="btn-new"
-              onClick={() => setIsOpenPdf(true)}
-            >
-              Upload PDF (BETA)          
-        </button> 
+        <div className='pdf-container'>
+          <button 
+            className="btn-new"
+            onClick={() => setIsOpenPdf(true)}
+          >
+            <span>Upload PDF (BETA)</span>
+          </button> 
+          <button
+            className="pdf-info"
+            onClick={() => setShowPdfInfo(true)}
+          >
+            ?
+          </button> 
+        </div>
         <FileUploadModal 
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}            
@@ -250,6 +256,17 @@ const LSIM1 = () => {
           onClose={() => setIsOpenPdf(false)}
           sem={activeSemester === "sem1" ? 1 : 2}
          />
+         <PdfInfoModal 
+          isOpen={showPdfInfo} 
+          onClose={() => setShowPdfInfo(false)}
+        />
+
+          {error && (
+              <div className="error-banner">
+                ⚠️ Error: {error}
+                <button onClick={() => setError(null)}>Dismiss</button>
+              </div>
+          )}
         
       </header>
       {activeSemester === 'sem1' && (
