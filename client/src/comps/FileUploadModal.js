@@ -27,35 +27,63 @@ const FileUploadModal = ({ isOpen, onClose }) => {
     maxSize: 2000000,
     maxFiles: 3,
   });
-
-  const upscaleImage = async (file, targetKB) => {
-    setStatus('Upscaling...');
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const img = new Image();
-        img.onload = async () => {
-          let scale = 1;
-          let blob;
-          for (let i = 0; i < 10; i++) {
-            scale += 0.2;
-            const canvas = document.createElement('canvas');
-            canvas.width = img.width * scale;
-            canvas.height = img.height * scale;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            blob = await new Promise(resolveBlob => canvas.toBlob(resolveBlob, file.type, 1));
-            if (blob.size / 1024 >= targetKB) break;
+  
+const upscaleImage = async (file, targetKB) => {
+  setStatus('Upscaling...');
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = async () => {
+        let scale = 1;
+        let blob;
+        for (let i = 0; i < 10; i++) {
+          scale += 0.2;
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          const ctx = canvas.getContext('2d');
+          
+          ctx.filter = 'contrast(1.3) brightness(1.1) grayscale(100%)';
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const data = imageData.data;
+          const kernel = [0, -1, 0, -1, 5, -1, 0, -1, 0];
+          
+          for (let y = 1; y < canvas.height - 1; y++) {
+            for (let x = 1; x < canvas.width - 1; x++) {
+              let r = 0, g = 0, b = 0;
+              for (let ky = -1; ky <= 1; ky++) {
+                for (let kx = -1; kx <= 1; kx++) {
+                  const idx = ((y + ky) * canvas.width + (x + kx)) * 4;
+                  const weight = kernel[(ky + 1) * 3 + (kx + 1)];
+                  r += data[idx] * weight;
+                  g += data[idx + 1] * weight;
+                  b += data[idx + 2] * weight;
+                }
+              }
+              const idx = (y * canvas.width + x) * 4;
+              data[idx] = Math.min(Math.max(r, 0), 255);
+              data[idx + 1] = Math.min(Math.max(g, 0), 255);
+              data[idx + 2] = Math.min(Math.max(b, 0), 255);
+            }
           }
-          resolve(blob);
-        };
-        img.onerror = reject;
-        img.src = reader.result;
+          ctx.putImageData(imageData, 0, 0);
+
+          blob = await new Promise(resolveBlob => canvas.toBlob(resolveBlob, file.type, 1));
+          if (blob.size / 1024 >= targetKB) break;
+        }
+        resolve(blob);
       };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  };
+      img.onerror = reject;
+      img.src = reader.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+};
+
 
   const handleUpload = async () => {
     setIsLoading(true);
@@ -63,7 +91,7 @@ const FileUploadModal = ({ isOpen, onClose }) => {
     try {
       const targetTotalMB = 5;
       const fileCount = files.length;
-      const upscaleTargets = { 1: 2500, 2: 2000, 3: 2000 };
+    const upscaleTargets = { 1: 2500, 2: 2000, 3: 1500 };
       const compressTargetsMB = { 1: 1.5, 2: 1.5, 3: 1 };
 
       setStatus('Upscaling images...');
