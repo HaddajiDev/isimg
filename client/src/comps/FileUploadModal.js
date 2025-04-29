@@ -44,12 +44,13 @@ const upscaleImage = async (file, targetKB) => {
           canvas.height = img.height * scale;
           const ctx = canvas.getContext('2d');
           
-          ctx.filter = 'contrast(1.3) brightness(1.1) grayscale(100%)';
+          ctx.filter = 'contrast(1.1) brightness(1.05) saturate(1.1)';
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           
           const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
           const data = imageData.data;
-          const kernel = [0, -1, 0, -1, 5, -1, 0, -1, 0];
+          
+          const kernel = [0, -0.5, 0, -0.5, 3, -0.5, 0, -0.5, 0];
           
           for (let y = 1; y < canvas.height - 1; y++) {
             for (let x = 1; x < canvas.width - 1; x++) {
