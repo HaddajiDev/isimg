@@ -11,6 +11,7 @@
   --success: #00b894;
   --danger: #ff7675;
   --border-radius: 12px;
+  --border-radius-sm: 8px;
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -29,6 +30,7 @@ body {
   min-height: 100vh;
   background: radial-gradient(circle at top right, rgba(108, 92, 231, 0.08), transparent 60%),
     radial-gradient(circle at bottom left, rgba(108, 92, 231, 0.05), transparent 40%);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .container {
@@ -127,6 +129,7 @@ button {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
 }
 
 button.active {
@@ -138,6 +141,10 @@ button.active {
 button:hover:not(.active) {
   background-color: var(--surface-hover);
   transform: translateY(-2px);
+}
+
+button:active:not(.active) {
+  transform: translateY(0);
 }
 
 button::before {
@@ -209,6 +216,8 @@ input[type="number"] {
   color: var(--text);
   transition: var(--transition);
   font-size: 0.95rem;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 input[type="number"]:focus {
@@ -356,6 +365,7 @@ p input {
   overflow-y: auto;
   max-height: 100vh;
   padding-right: 5px;
+  -webkit-overflow-scrolling: touch;
 }
 
 .warraper::-webkit-scrollbar {
@@ -423,6 +433,7 @@ p input {
   margin: 1.5rem 0;
   box-shadow: 0 8px 20px rgba(108, 92, 231, 0.3);
   z-index: 1;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn-new::before {
@@ -442,13 +453,13 @@ p input {
   box-shadow: 0 12px 25px rgba(108, 92, 231, 0.4);
 }
 
-.btn-new:hover::before {
-  left: 100%;
+.btn-new:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
 }
 
-.btn-new:active {
-  transform: translateY(1px);
-  box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+.btn-new:hover::before {
+  left: 100%;
 }
 
 .btn-new:focus {
@@ -529,6 +540,7 @@ p input {
   background: transparent;
   color: var(--primary);
   transition: all 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .pdf-info:hover {
@@ -538,9 +550,19 @@ p input {
   color: white;
 }
 
+.pdf-info:active {
+  transform: translateY(0) rotate(0);
+  box-shadow: 0 5px 10px rgba(108, 92, 231, 0.2);
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 1rem;
+  }
+
+  header {
+    padding: 1.5rem 1rem;
+    border-radius: var(--border-radius-sm);
   }
 
   h1 {
@@ -553,15 +575,20 @@ p input {
 
   input[type="number"] {
     max-width: 100%;
+    font-size: 16px; /* Prevents iOS zoom on focus */
+    padding: 0.7rem;
   }
 
   fieldset {
-    padding: 1.2rem;
+    padding: 1.2rem 1rem;
+    border-radius: var(--border-radius-sm);
   }
 
   button {
     width: 100%;
-    padding: 1rem;
+    padding: 0.9rem;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.95rem;
   }
 
   .switch-container {
@@ -570,6 +597,31 @@ p input {
 
   #final-overall {
     font-size: 1.8rem;
+  }
+
+  .fieldset-result div {
+    font-size: 1.1rem;
+    padding: 0.8rem;
+  }
+
+  legend {
+    font-size: 1rem;
+  }
+
+  .btn-new {
+    padding: 0.9rem 2rem;
+    width: 100%;
+    border-radius: var(--border-radius-sm);
+  }
+
+  .error-banner {
+    padding: 0.8rem 1.5rem;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .error-banner button {
+    width: 100%;
   }
 }
 
@@ -580,17 +632,102 @@ p input {
 
   input[type="number"] {
     padding: 0.6rem;
+    border-radius: var(--border-radius-sm);
   }
 
   fieldset {
-    padding: 1rem;
+    padding: 1rem 0.8rem;
   }
 
   .btn-new {
     padding: 0.8rem 1.8rem;
+    font-size: 0.9rem;
   }
 
   #final-overall {
     font-size: 1.5rem;
+  }
+
+  p {
+    flex-wrap: wrap;
+  }
+
+  p input {
+    margin-left: 0;
+    margin-top: 0.3rem;
+    width: 100%;
+  }
+
+  .pdf-container {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .pdf-info {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 350px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  fieldset {
+    padding: 0.8rem 0.6rem;
+  }
+
+  legend {
+    font-size: 0.9rem;
+    padding: 0 0.5rem;
+  }
+
+  .fieldset-result div {
+    font-size: 1rem;
+    padding: 0.6rem;
+  }
+}
+
+/* For landscape orientation on small devices */
+@media (max-height: 500px) and (orientation: landscape) {
+  .container {
+    padding: 0.8rem;
+  }
+
+  header {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .switch-container {
+    margin: 1rem 0;
+  }
+
+  .form-container {
+    gap: 1rem;
+  }
+
+  fieldset {
+    padding: 1rem 0.8rem;
+  }
+
+  .warraper {
+    max-height: 60vh;
+  }
+
+  #final-overall {
+    font-size: 1.5rem;
+    padding: 0.5rem;
+  }
+
+  .fieldset-final {
+    padding: 1rem;
   }
 }
