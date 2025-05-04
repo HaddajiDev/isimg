@@ -127,8 +127,8 @@ def extract_grades():
                 { 'subject': 'Systemes logique', 'dssl': grades["logique"]["DS"], 'examensl': grades["logique"]["Ex"], 'tpsl': grades["logique"]["TP"] },  
                 { 'subject': 'Logique formelle', 'dslf': grades["formelle"]["DS"], 'exalf': grades["formelle"]["Ex"] },  
                 { 'subject': 'Technologies multimedia', 'dsmm': grades["multi1"]["DS"], 'examm': grades["multi1"]["Ex"], 'tpmm': grades["multi1"]["TP"] },  
-                { 'subject': 'Anglais', 'oralang': grades["ang1"]["Oral"], 'dsang': grades["ang1"]["DS"], 'exaang': grades["ang1"]["DS2"] },  
-                { 'subject': 'Francais', 'oralfr': grades["fra1"]["Oral"], 'dsfr': grades["fra1"]["DS"], 'exafr': grades["fra1"]["DS2"]}
+                { 'subject': 'Anglais', 'oralang': grades["ang1"]["Oral"], 'dsang': grades["ang1"]["DS"], 'ds2ang': grades["ang1"]["DS2"] },  
+                { 'subject': 'Francais', 'oralfr': grades["fra1"]["Oral"], 'dsfr': grades["fra1"]["DS"], 'ds2fr': grades["fra1"]["DS2"]}
         ]
         data2 = [
                 { 'subject': 'Algebre', 'dsal': grades["algebre2"]["DS"], 'exal': grades["algebre2"]["Ex"] },
@@ -139,9 +139,9 @@ def extract_grades():
                 { 'subject': 'Systemes d exploitation', 'dsse': grades["systeme2"]["DS"], 'exase': grades["systeme2"]["Ex"], 'tpse': grades["systeme2"]["TP"] },
                 { 'subject': 'Fondements des reseaux', 'dssl': grades["reseaux"]["DS"], 'examensl': grades["reseaux"]["Ex"], 'tpsl': grades["reseaux"]["TP"] },
                 { 'subject': 'Fondements des bases de donnees', 'dslf': grades["base"]["DS"], 'exalf': grades["base"]["Ex"] },
-                { 'subject': 'Anglais', 'oralang': grades["ang2"]["Oral"], 'dsang': grades["ang2"]["DS"], 'exaang': grades["ang2"]["DS2"] },
-                { 'subject': 'Francais', 'oralfr': grades["fra2"]["Oral"], 'dsfr': grades["fra2"]["DS"], 'exafr': grades["fra2"]["DS2"] },
-                { 'subject': 'Culture et competence numerique', 'oralfrr': grades["cult"]["Oral"], 'dsfrr': grades["cult"]["DS"], 'exafrr': grades["cult"]["DS2"] }
+                { 'subject': 'Anglais', 'oralang': grades["ang2"]["Oral"], 'dsang': grades["ang2"]["DS"], 'ds2ang': grades["ang2"]["DS2"] },
+                { 'subject': 'Francais', 'oralfr': grades["fra2"]["Oral"], 'dsfr': grades["fra2"]["DS"], 'ds2fr': grades["fra2"]["DS2"] },
+                { 'subject': 'Culture et competence numerique', 'oralfrr': grades["cult"]["Oral"], 'dsfrr': grades["cult"]["DS"], 'ds2frr': grades["cult"]["DS2"] }
         ]
 
         final_data = data if sem == "1" else data2
