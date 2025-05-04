@@ -13,6 +13,7 @@ const client = new OpenAi({
 });
 
 const PROMPT = process.env.PROMPT;
+const PROMPT_2 = process.env.PROMPT_2;
 const BACK = process.env.BACK;
   
 
@@ -28,6 +29,8 @@ module.exports = (db, bucket) => {
         if (!req.files || req.files.length === 0) {
             return res.status(400).json({ error: "No files uploaded" });
         }
+
+        const sem = req.query.sem;
         
         try {    
             const uploadPromises = req.files.map(file => {
@@ -46,7 +49,7 @@ module.exports = (db, bucket) => {
                 `https://isimg-pre-back.vercel.app/api/inspect/${us.id}`
             );
     
-            const data = await GetData(urls);
+            const data = await GetData(urls, sem);
             res.status(200).send({ ai: data });
     
         } catch (error) {
@@ -196,13 +199,13 @@ module.exports = (db, bucket) => {
     return router;
 }
 
-async function GetData(urls) {
+async function GetData(urls, sem) {
     try {
         const userInput = `extract data | ${urls.join(' | ')}`;
 
         const messages = [{
             role: "system",
-            content: PROMPT
+            content: sem.toString() === "1" ? PROMPT : PROMPT_2
         }];
 
         if (userInput.includes('|')) {

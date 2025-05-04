@@ -5,7 +5,7 @@ import imageCompression from 'browser-image-compression';
 import './modal.css';
 import { getData } from '../redux/FileSlice';
 
-const FileUploadModal = ({ isOpen, onClose }) => {
+const FileUploadModal = ({ isOpen, onClose, sem }) => {
   const [files, setFiles] = useState([]);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -119,7 +119,7 @@ const upscaleImage = async (file, targetKB) => {
       setStatus('Uploading to cloud...');
       const formData = new FormData();
       processedFiles.forEach((file, index) => formData.append('files', file, files[index].name));
-      await dispatch(getData(formData)).unwrap();
+      await dispatch(getData({formData: formData, sem: sem})).unwrap();
 
       setStatus('AI analysis...');
       await new Promise(resolve => setTimeout(resolve, 1500));
