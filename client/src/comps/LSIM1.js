@@ -23,8 +23,8 @@ const LSIM1 = () => {
     dslf: 0, exalf: 0,
     dsmm: 0, examm: 0, tpmm: 0,
     // Langue
-    oralang: 0, dsang: 0, exaang: 0,
-    oralfr: 0, dsfr: 0, exafr: 0
+    oralang: 0, dsang: 0, ds2ang: 0,
+    oralfr: 0, dsfr: 0, ds2fr: 0
   });
 
   const [sem2, setSem2] = useState({
@@ -41,9 +41,9 @@ const LSIM1 = () => {
     // Fondements des bases de données
     dslf: 0, exalf: 0,
     // Langue
-    oralang: 0, dsang: 0, exaang: 0,
-    oralfr: 0, dsfr: 0, exafr: 0,
-    oralfrr: 0, dsfrr: 0, exafrr: 0
+    oralang: 0, dsang: 0, ds2ang: 0,
+    oralfr: 0, dsfr: 0, ds2fr: 0,
+    oralfrr: 0, dsfrr: 0, ds2frr: 0
   });
 
   const handleSem1Change = (e) => {
@@ -72,8 +72,8 @@ const LSIM1 = () => {
   const sem1_mm       = sem1.dsmm  * 0.15 + sem1.examm  * 0.7 + sem1.tpmm  * 0.15;
   const sem1_lm       = (sem1_lf + sem1_mm) / 2;
 
-  const sem1_ang      = sem1.oralang * 0.2 + sem1.dsang  * 0.4 + sem1.exaang * 0.4;
-  const sem1_fr       = sem1.oralfr  * 0.2 + sem1.dsfr   * 0.4 + sem1.exafr  * 0.4;
+  const sem1_ang      = sem1.oralang * 0.2 + sem1.dsang  * 0.4 + sem1.ds2ang * 0.4;
+  const sem1_fr       = sem1.oralfr  * 0.2 + sem1.dsfr   * 0.4 + sem1.ds2fr  * 0.4;
   const sem1_lang     = (sem1_ang + sem1_fr) / 2;
 
   const sem1_overall  = (sem1_math * 3 + sem1_info * 3.5 + sem1_seg * 3.5 + sem1_lm * 3 + sem1_lang * 2) / 15;
@@ -93,9 +93,9 @@ const LSIM1 = () => {
 
   const sem2_lm       = sem2.dslf  * 0.3 + sem2.exalf  * 0.7;
 
-  const sem2_ang      = sem2.oralang * 0.2 + sem2.dsang  * 0.4 + sem2.exaang * 0.4;
-  const sem2_fr       = sem2.oralfr  * 0.2 + sem2.dsfr   * 0.4 + sem2.exafr  * 0.4;
-  const sem2_frr      = sem2.oralfrr * 0.2 + sem2.dsfrr  * 0.4 + sem2.exafrr * 0.4;
+  const sem2_ang      = sem2.oralang * 0.2 + sem2.dsang  * 0.4 + sem2.ds2ang * 0.4;
+  const sem2_fr       = sem2.oralfr  * 0.2 + sem2.dsfr   * 0.4 + sem2.ds2fr  * 0.4;
+  const sem2_frr      = sem2.oralfrr * 0.2 + sem2.dsfrr  * 0.4 + sem2.ds2frr * 0.4;
   const sem2_lang     = (sem2_ang + sem2_fr + sem2_frr) / 3;
 
   const sem2_overall  = (sem2_math * 3 + sem2_info * 3.5 + sem2_seg * 3.5 + sem2_lm * 2 + sem2_lang * 3) / 15;
@@ -221,8 +221,7 @@ const LSIM1 = () => {
             2ème Semestre
           </button>
         </div>
-        {activeSemester === 'sem1' && (
-          <>
+        <>
             <button 
               style={{marginTop: '30px'}}              
               className="btn-new"
@@ -231,7 +230,6 @@ const LSIM1 = () => {
               <span>Upload Screenshot (BETA)</span>     
             </button>            
           </>
-        )}
         <br />
         <div className='pdf-container'>
           <button 
@@ -249,7 +247,8 @@ const LSIM1 = () => {
         </div>
         <FileUploadModal 
             isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}            
+            onClose={() => setIsModalOpen(false)}  
+            sem={activeSemester === "sem1" ? 1 : 2}          
         />
         <PdfFileUpload 
           isOpen={isOpenPdf}
@@ -258,7 +257,7 @@ const LSIM1 = () => {
          />
          <PdfInfoModal 
           isOpen={showPdfInfo} 
-          onClose={() => setShowPdfInfo(false)}
+          onClose={() => setShowPdfInfo(false)}          
         />
 
           {error && (
@@ -611,11 +610,11 @@ const LSIM1 = () => {
                     ds 2{' '}
                     <input
                     type="number"
-                    id="exaang"
+                    id="ds2ang"
                     min="0"
                     max="20"
                     step="0.25"
-                    value={sem1.exaang}
+                    value={sem1.ds2ang}
                     onChange={handleSem1Change}
                     />
                 </p>
@@ -651,11 +650,11 @@ const LSIM1 = () => {
                     ds 2{' '}
                     <input
                     type="number"
-                    id="exafr"
+                    id="ds2fr"
                     min="0"
                     max="20"
                     step="0.25"
-                    value={sem1.exafr}
+                    value={sem1.ds2fr}
                     onChange={handleSem1Change}
                     />
                 </p>
@@ -1003,11 +1002,11 @@ const LSIM1 = () => {
                 ds 2{' '}
                 <input
                   type="number"
-                  id="exaang"
+                  id="ds2ang"
                   min="0"
                   max="20"
                   step="0.25"
-                  value={sem2.exaang}
+                  value={sem2.ds2ang}
                   onChange={handleSem2Change}
                 />
               </p>
@@ -1043,11 +1042,11 @@ const LSIM1 = () => {
                 ds 2{' '}
                 <input
                   type="number"
-                  id="exafr"
+                  id="ds2fr"
                   min="0"
                   max="20"
                   step="0.25"
-                  value={sem2.exafr}
+                  value={sem2.ds2fr}
                   onChange={handleSem2Change}
                 />
               </p>
@@ -1083,11 +1082,11 @@ const LSIM1 = () => {
                 ds 2{' '}
                 <input
                   type="number"
-                  id="exafrr"
+                  id="ds2frr"
                   min="0"
                   max="20"
                   step="0.25"
-                  value={sem2.exafrr}
+                  value={sem2.ds2frr}
                   onChange={handleSem2Change}
                 />
               </p>
