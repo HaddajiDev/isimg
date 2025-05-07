@@ -4,6 +4,8 @@ import axios from 'axios';
 const URL = `https://isimg-pre-back.vercel.app/api/data`
 // const URL = 'http://localhost:5000/api/data'
 
+axios.defaults.withCredentials = false;
+
 export const getData = createAsyncThunk('data/get', async ({formData}, { rejectWithValue }) => {
   try {
     const result = await axios.post(`${URL}`, formData, {      
