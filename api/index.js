@@ -14,12 +14,14 @@ app.use(express.urlencoded({ extended: true }));
 
 
 const corsOptions = {
-    origin: ['http://localhost:3000', 'https://isimg.vercel.app', "https://isimg-preview.vercel.app", "https://isimg-pre-back.vercel.app"],
+    origin: ['http://localhost:3000', 'https://isimg.vercel.app', 'https://isimg-preview.vercel.app', 'https://isimg-pre-back.vercel.app'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Range'],
 };
 
-app.use(cors());
+// Apply CORS with options
+app.use(cors(corsOptions));
 
 (async () => {
     try {

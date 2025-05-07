@@ -19,11 +19,11 @@ const BACK = process.env.BACK;
 
 module.exports = (db, bucket) => {
 
-    router.use((req, res, next) => {
-        res.header('Access-Control-Allow-Origin', '*');
-        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Range');
-        next();
-    });
+    // router.use((req, res, next) => {
+    //     res.header('Access-Control-Allow-Origin', '*');
+    //     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Range');
+    //     next();
+    // });
 
     router.post('/data', upload.array('files'), async (req, res) => {    
         if (!req.files || req.files.length === 0) {
