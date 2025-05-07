@@ -19,18 +19,49 @@ const BACK = process.env.BACK;
 
 module.exports = (db, bucket) => {
 
-    router.use((req, res, next) => {
-        res.header('Access-Control-Allow-Origin', '*');
-        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Range');
-        next();
-    });
+    // router.use((req, res, next) => {
+    //     res.header('Access-Control-Allow-Origin', '*');
+    //     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Range');
+    //     next();
+    // });
 
     router.post('/data', upload.array('files'), async (req, res) => {    
         if (!req.files || req.files.length === 0) {
             return res.status(400).json({ error: "No files uploaded" });
         }
+        
+        try {    
+            const uploadPromises = req.files.map(file => {
+                return new Promise((resolve, reject) => {
+                    const readableStream = Readable.from(file.buffer);
+                    const uploadStream = bucket.openUploadStream(file.originalname);
+    
+                    readableStream.pipe(uploadStream)
+                        .on('error', reject)
+                        .on('finish', () => resolve(uploadStream));
+                });
+            });
 
-        const sem = req.query.sem;
+            console.log("uploading");
+    
+            const uploadStreams = await Promise.all(uploadPromises);
+            const urls = uploadStreams.map(us => 
+                `https://isimg-pre-back.vercel.app/api/inspect/${us.id}`
+            );
+    
+            const data = await GetData(urls, 1);
+            res.status(200).send({ ai: data });
+    
+        } catch (error) {
+            console.error('Error:', error);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    });
+
+    router.post('/data/sem', upload.array('files'), async (req, res) => {    
+        if (!req.files || req.files.length === 0) {
+            return res.status(400).json({ error: "No files uploaded" });
+        }       
         
         try {    
             const uploadPromises = req.files.map(file => {
@@ -49,7 +80,7 @@ module.exports = (db, bucket) => {
                 `https://isimg-pre-back.vercel.app/api/inspect/${us.id}`
             );
     
-            const data = await GetData(urls, sem);
+            const data = await GetData(urls, 2);
             res.status(200).send({ ai: data });
     
         } catch (error) {
@@ -205,7 +236,7 @@ async function GetData(urls, sem) {
 
         const messages = [{
             role: "system",
-            content: sem.toString() === "1" ? PROMPT : PROMPT_2
+            content: sem === 1 ? PROMPT : PROMPT_2
         }];
 
         if (userInput.includes('|')) {
@@ -237,6 +268,7 @@ async function GetData(urls, sem) {
 
         const aiResponse = completion.choices[0].message.content;
         const finalResponse = aiResponse.replace(/```json|```/g, '');
+        console.log(finalResponse);
         return finalResponse;
 
     } catch (error) {
