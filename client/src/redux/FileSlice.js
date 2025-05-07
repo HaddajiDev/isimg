@@ -1,7 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 
-const URL = `https://isimg-pre-back.vercel.app/api/data`
+
+const URL = "https://isimg-pre-back.onrender.com/api/data"
+// const URL = `https://isimg-pre-back.vercel.app/api/data`
 // const URL = 'http://localhost:5000/api/data'
 
 axios.defaults.withCredentials = false;
