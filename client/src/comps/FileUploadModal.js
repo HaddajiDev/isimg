@@ -24,12 +24,12 @@ const FileUploadModal = ({ isOpen, onClose, sem }) => {
     accept: { 'image/*': ['.jpeg', '.jpg', '.png'] },
     multiple: true,
     minSize: 0,
-    maxSize: 4000000,
+    maxSize: 2000000,
     maxFiles: 3,
   });
   
 const upscaleImage = async (file, targetKB) => {
-  setStatus(`Upscaling ${file.name}...`);
+  setStatus('Upscaling...');
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => {
@@ -37,14 +37,8 @@ const upscaleImage = async (file, targetKB) => {
       img.onload = async () => {
         let scale = 1;
         let blob;
-        
-        if (file.size / 1024 >= targetKB) {
-          resolve(file);
-          return;
-        }
-        
-        for (let i = 0; i < 8; i++) {
-          scale += 0.25;
+        for (let i = 0; i < 10; i++) {
+          scale += 0.2;
           const canvas = document.createElement('canvas');
           canvas.width = img.width * scale;
           canvas.height = img.height * scale;
@@ -78,19 +72,10 @@ const upscaleImage = async (file, targetKB) => {
           }
           ctx.putImageData(imageData, 0, 0);
 
-          blob = await new Promise(resolveBlob => canvas.toBlob(resolveBlob, file.type, 0.9));
-          
+          blob = await new Promise(resolveBlob => canvas.toBlob(resolveBlob, file.type, 1));
           if (blob.size / 1024 >= targetKB) break;
-          
-          if (blob.size / 1024 >= targetKB * 1.5) {
-            blob = await imageCompression(blob, {
-              maxSizeMB: targetKB / 1024,
-              useWebWorker: true,
-            });
-            break;
-          }
         }
-        resolve(blob || file);
+        resolve(blob);
       };
       img.onerror = reject;
       img.src = reader.result;
@@ -100,64 +85,48 @@ const upscaleImage = async (file, targetKB) => {
   });
 };
 
+
   const handleUpload = async () => {
     setIsLoading(true);
     setError('');
     try {
-      const MAX_TOTAL_MB = 4;
+      const targetTotalMB = 5;
       const fileCount = files.length;
-      
-      const targetKBPerFile = Math.floor(MAX_TOTAL_MB * 1024 / fileCount);
-      
+      const upscaleTargets = { 1: 2000, 2: 1500, 3: 1000 };
+      const compressTargetsMB = { 1: 1.5, 2: 1.5, 3: 1 };
+
       setStatus('Upscaling images...');
       const upscaledFiles = await Promise.all(
-        files.map(file => upscaleImage(file, targetKBPerFile))
+        files.map(file => upscaleImage(file, upscaleTargets[fileCount] || 1000))
       );
 
-      setStatus('Validating and compressing...');
-      const totalSizeMB = upscaledFiles.reduce((acc, file) => acc + file.size / 1024 / 1024, 0);
-      console.log(`Total size after upscaling: ${totalSizeMB.toFixed(2)}MB`);
-      
-      let processedFiles = upscaledFiles;
-      if (totalSizeMB > MAX_TOTAL_MB) {
-        setStatus('Further optimizing images...');
-        const compressionTargetMB = MAX_TOTAL_MB / fileCount;
-        processedFiles = await Promise.all(
-          upscaledFiles.map(async (file, index) => 
-            imageCompression(file, {
-              maxSizeMB: compressionTargetMB,
-              useWebWorker: true,
-              initialQuality: 0.8,
-              fileType: files[index].type,
-            })
-          )
-        );
-      }
+      setStatus('Compressing images...');
+      const processedFiles = await Promise.all(
+        upscaledFiles.map(async (file, index) => 
+          imageCompression(file, {
+            maxSizeMB: compressTargetsMB[fileCount] || 0.8,
+            useWebWorker: true,
+            initialQuality: 1,
+            fileType: files[index].type,
+          })
+        )
+      );
 
-      const finalSizeMB = processedFiles.reduce((acc, file) => acc + file.size / 1024 / 1024, 0);
-      console.log(`Final total size: ${finalSizeMB.toFixed(2)}MB`);
-      
-      if (finalSizeMB > MAX_TOTAL_MB + 0.1) {
-        throw new Error(`Total size ${finalSizeMB.toFixed(1)}MB exceeds ${MAX_TOTAL_MB}MB limit`);
-      }
+      setStatus('Validating size...');
+      const totalSizeMB = processedFiles.reduce((acc, file) => acc + file.size / 1024 / 1024, 0);
+      if (totalSizeMB > targetTotalMB) throw new Error(`Total size ${totalSizeMB.toFixed(1)}MB exceeds 5MB limit`);
 
-      setStatus('Uploading to server...');
+      setStatus('Uploading to cloud...');
       const formData = new FormData();
-      processedFiles.forEach((file, index) => {
-        const fileName = files[index].name;
-        console.log(`Adding file: ${fileName}, size: ${(file.size / 1024 / 1024).toFixed(2)}MB`);
-        formData.append('files', file, fileName);
-      });
-      
+      processedFiles.forEach((file, index) => formData.append('files', file, files[index].name));
       await dispatch(getData({formData: formData, sem: sem})).unwrap();
 
-      setStatus('Processing with AI...');
+      setStatus('AI analysis...');
       await new Promise(resolve => setTimeout(resolve, 1500));
 
       setFiles([]);
       onClose();
     } catch (err) {
-      console.error("Upload error:", err);
       setError(err.message || 'Upload failed');
     }
     setIsLoading(false);
@@ -185,13 +154,13 @@ const upscaleImage = async (file, targetKB) => {
             <div className={`step ${status.includes('Upscaling') && 'active'}`}>
               <span>🎨</span> Upscaling
             </div>
-            <div className={`step ${status.includes('optimizing') || status.includes('compressing') || status.includes('Validating') ? 'active' : ''}`}>
-              <span>📦</span> Optimizing
+            <div className={`step ${status.includes('Compressing') && 'active'}`}>
+              <span>📦</span> Compressing
             </div>
             <div className={`step ${status.includes('Uploading') && 'active'}`}>
               <span>☁️</span> Uploading
             </div>
-            <div className={`step ${status.includes('AI') || status.includes('Processing') ? 'active' : ''}`}>
+            <div className={`step ${status.includes('AI') && 'active'}`}>
               <span>🤖</span> AI Analysis
             </div>
           </div>
