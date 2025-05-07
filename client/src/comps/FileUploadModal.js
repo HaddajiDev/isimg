@@ -3,7 +3,7 @@ import { useDropzone } from 'react-dropzone';
 import { useDispatch } from 'react-redux';
 import imageCompression from 'browser-image-compression';
 import './modal.css';
-import { getData } from '../redux/FileSlice';
+import { getData, getData_2 } from '../redux/FileSlice';
 
 const FileUploadModal = ({ isOpen, onClose, sem }) => {
   const [files, setFiles] = useState([]);
@@ -119,7 +119,13 @@ const upscaleImage = async (file, targetKB) => {
       setStatus('Uploading to cloud...');
       const formData = new FormData();
       processedFiles.forEach((file, index) => formData.append('files', file, files[index].name));
-      await dispatch(getData({files: formData, sem: sem})).unwrap();
+      console.log(sem)
+      if(sem === 1){
+        await dispatch(getData({formData: formData})).unwrap();
+      }
+      else{
+        await dispatch(getData_2({formData: formData})).unwrap();
+      }
 
       setStatus('AI analysis...');
       await new Promise(resolve => setTimeout(resolve, 1500));

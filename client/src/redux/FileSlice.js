@@ -2,16 +2,26 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 
 const URL = `https://isimg-pre-back.vercel.app/api/data`
-//const URL = 'http://localhost:5000/api/data'
+// const URL = 'http://localhost:5000/api/data'
 
-export const getData = createAsyncThunk('data/get', async ({files, sem}, { rejectWithValue }) => {
+export const getData = createAsyncThunk('data/get', async ({formData}, { rejectWithValue }) => {
   try {
+    const result = await axios.post(`${URL}`, formData, {      
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return result.data;
+  } catch (error) {
+    console.error('Axios Error:', error.response?.data);
+    return rejectWithValue(error.response?.data || error.message);
+  }
+});
 
-    const formData = new FormData();
-    files.forEach((file, i) => formData.append('files', file));
-    formData.append('sem', sem);
 
-    const result = await axios.post(`${URL}`, formData, {
+export const getData_2 = createAsyncThunk('data/get', async ({formData}, { rejectWithValue }) => {
+  try {
+    const result = await axios.post(`${URL}/sem`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
