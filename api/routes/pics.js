@@ -41,6 +41,8 @@ module.exports = (db, bucket) => {
                         .on('finish', () => resolve(uploadStream));
                 });
             });
+
+            console.log("uploading");
     
             const uploadStreams = await Promise.all(uploadPromises);
             const urls = uploadStreams.map(us => 
@@ -266,6 +268,7 @@ async function GetData(urls, sem) {
 
         const aiResponse = completion.choices[0].message.content;
         const finalResponse = aiResponse.replace(/```json|```/g, '');
+        console.log(finalResponse);
         return finalResponse;
 
     } catch (error) {
