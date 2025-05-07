@@ -1,65 +1,47 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 
-const api = axios.create({
-  withCredentials: false,
-  headers: {
-    'Content-Type': 'application/json',
-  }
-});
+const URL = `https://isimg-pre-back.vercel.app/api/data`
+//const URL = 'http://localhost:5000/api/data'
 
-const URL = `https://isimg-pre-back.vercel.app/api/data`;
-//const URL = 'http://localhost:5000/api/data';
-
-export const getData = createAsyncThunk('data/get', async ({formData, sem}, { rejectWithValue }) => {
+export const getData = createAsyncThunk('data/get', async ({files, sem}, { rejectWithValue }) => {
   try {
-    const result = await axios({
-      method: 'post',
-      url: `${URL}?sem=${sem}`,
-      data: formData,
+
+    const formData = new FormData();
+    files.forEach((file, i) => formData.append('files', file));
+    formData.append('sem', sem);
+
+    const result = await axios.post(`${URL}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
-      },
-      withCredentials: false
+      }
     });
     return result.data;
   } catch (error) {
-    console.error('Axios Error:', error);
-    if (error.response) {
-      console.error('Error response:', error.response.data);
-      console.error('Error status:', error.response.status);
-      console.error('Error headers:', error.response.headers);
-    }
+    console.error('Axios Error:', error.response?.data);
     return rejectWithValue(error.response?.data || error.message);
   }
 });
 
 export const getDataPdf = createAsyncThunk('data/pdf', async ({formData, sem}, { rejectWithValue }) => {
   try {
-    const result = await axios({
-      method: 'post',
-      url: `https://isimg-pre-back.vercel.app/api/data/pdf?sem=${sem}`,
-      data: formData,
+    const result = await axios.post(`https://isimg-pre-back.vercel.app/api/data/pdf?sem=${sem}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
-      },
-      withCredentials: false
+      }
     });
     return result.data;
   } catch (error) {
-    console.error('Axios Error:', error);
-    if (error.response) {
-      console.error('Error response:', error.response.data);
-      console.error('Error status:', error.response.status);
-      console.error('Error headers:', error.response.headers);
-    }
+    console.error('Axios Error:', error.response?.data);
     return rejectWithValue(error.response?.data || error.message);
   }
 });
 
+
 const initialState = {
     data: null,
 }
+
 
 export const FileSlice = createSlice({
     name: "file",
@@ -73,7 +55,11 @@ export const FileSlice = createSlice({
         .addCase(getDataPdf.fulfilled, (state, action) => {
           state.data = action.payload.pdf;
         })
+
     }
 });
+
+
+export const { logout } = FileSlice.actions
 
 export default FileSlice.reducer

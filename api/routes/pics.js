@@ -19,18 +19,18 @@ const BACK = process.env.BACK;
 
 module.exports = (db, bucket) => {
 
-    // router.use((req, res, next) => {
-    //     res.header('Access-Control-Allow-Origin', '*');
-    //     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Range');
-    //     next();
-    // });
+    router.use((req, res, next) => {
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Range');
+        next();
+    });
 
     router.post('/data', upload.array('files'), async (req, res) => {    
         if (!req.files || req.files.length === 0) {
             return res.status(400).json({ error: "No files uploaded" });
         }
 
-        const sem = req.query.sem;
+        const sem = req.body.sem;
         
         try {    
             const uploadPromises = req.files.map(file => {

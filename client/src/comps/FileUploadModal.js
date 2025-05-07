@@ -119,7 +119,7 @@ const upscaleImage = async (file, targetKB) => {
       setStatus('Uploading to cloud...');
       const formData = new FormData();
       processedFiles.forEach((file, index) => formData.append('files', file, files[index].name));
-      await dispatch(getData({formData: formData, sem: sem})).unwrap();
+      await dispatch(getData({files: formData, sem: sem})).unwrap();
 
       setStatus('AI analysis...');
       await new Promise(resolve => setTimeout(resolve, 1500));
