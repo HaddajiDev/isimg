@@ -262,7 +262,7 @@ async function GetData(urls, sem) {
         }
 
         const completion = await client.chat.completions.create({
-            model: "google/learnlm-1.5-pro-experimental:free",
+            model: process.env.MODEL,
             messages: messages
         });
 
