@@ -5,6 +5,8 @@ import { getData } from '../redux/FileSlice';
 import FileUploadModal from './FileUploadModal';
 import PdfFileUpload from './PdfFileUpload';
 import PdfInfoModal from './PdfInfoModal';
+import Silk from './Silk';
+import Beams from './Beams';
 
 const LSIM1 = () => {
   const [activeSemester, setActiveSemester] = useState('sem1');
@@ -204,6 +206,18 @@ const LSIM1 = () => {
   return (
     <div className="container">
       <header>
+        <div className="silk-container">
+          <Beams
+            beamWidth={3}
+            beamHeight={30}
+            beamNumber={20}
+            lightColor="#9370DB"
+            speed={2}
+            noiseIntensity={1.75}
+            scale={0.2}
+            rotation={30}
+          />
+      </div>
         <h1>LSIM 1</h1>
         <div className="switch-container">
           <button
@@ -268,6 +282,7 @@ const LSIM1 = () => {
           )}
         
       </header>
+      
       {activeSemester === 'sem1' && (
         <form className="form-container">
           <fieldset className="fieldset-result">
