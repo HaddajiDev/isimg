@@ -1,12 +1,23 @@
 "use client"
 import "./home.css"
 import { useNavigate } from "react-router-dom"
+import Silk from "./Silk"
 
 function Home() {
   const navigate = useNavigate()
 
   return (
     <div className="over">
+      <div className="silk-container">
+        <Silk
+            speed={5}
+            scale={1}
+            color="#9370DB"
+            noiseIntensity={1.5}
+            rotation={0}
+        />
+      </div>
+
       <div className="container-home">
         <div className="content">
           <h1 className="title">ISIMG</h1>
@@ -42,9 +53,9 @@ function Home() {
             </span>
             <span className="github-text">View on GitHub</span>
           </a>
+          <p className="credits">© {new Date().getFullYear()} Made by Ghaith Belhassen and Ahmed Haddaji</p>
         </div>
       </div>
-      <p className="credits">© {new Date().getFullYear()} Made by Ghaith Belhassen and Ahmed Haddaji</p>
     </div>
   )
 }
