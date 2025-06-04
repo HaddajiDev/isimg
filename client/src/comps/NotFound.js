@@ -1,7 +1,6 @@
 import React from 'react'
 import './Beams.css'
 import Particles from './Particles'
-import FuzzyText from './FuzzyText';
 import MagnetLines from './MagnetLines ';
 
 function NotFound() {
