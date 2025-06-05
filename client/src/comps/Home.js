@@ -1,7 +1,8 @@
 "use client"
 import "./home.css"
 import { useNavigate } from "react-router-dom"
-import Silk from "./Silk"
+import Silk from "./Backgrounds/Silk"
+import Credits from "./Credits"
 
 function Home() {
   const navigate = useNavigate()
@@ -53,7 +54,7 @@ function Home() {
             </span>
             <span className="github-text">View on GitHub</span>
           </a>
-          <p className="credits">© {new Date().getFullYear()} Made by Ghaith Belhassen and Ahmed Haddaji</p>
+          <Credits />
         </div>
       </div>
     </div>

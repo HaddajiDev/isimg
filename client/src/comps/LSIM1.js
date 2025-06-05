@@ -5,8 +5,8 @@ import { getData } from '../redux/FileSlice';
 import FileUploadModal from './FileUploadModal';
 import PdfFileUpload from './PdfFileUpload';
 import PdfInfoModal from './PdfInfoModal';
-import Silk from './Silk';
-import Beams from './Beams';
+import Beams from './Backgrounds/Beams';
+import Credits from './Credits';
 
 const LSIM1 = () => {
   const [activeSemester, setActiveSemester] = useState('sem1');
@@ -1116,7 +1116,7 @@ const LSIM1 = () => {
         <legend>Moyenne Générale de l'année</legend>
         <div id="final-overall">{format(finalOverall)}</div>
       </fieldset>
-      <p className='credits'>© {new Date().getFullYear()} Made by Ghaith Belhassen and Ahmed Haddaji</p>
+      <Credits />
     </div>
     
   );

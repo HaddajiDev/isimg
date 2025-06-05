@@ -1,7 +1,7 @@
 import React from 'react'
-import './Beams.css'
-import Particles from './Particles'
-import MagnetLines from './MagnetLines ';
+import './Backgrounds/Beams.css'
+import Particles from './Backgrounds/Particles'
+import MagnetLines from './Backgrounds/MagnetLines ';
 
 function NotFound() {
   return (
