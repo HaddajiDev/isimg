@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './lsim1.css';
+import Credits from './Credits';
 
 const LSIM2 = () => {
   const [grades, setGrades] = useState({
@@ -182,7 +183,7 @@ const LSIM2 = () => {
         </div>
       </fieldset>
 
-      <p className='credits'>© {new Date().getFullYear()} Made by Ghaith Belhassen and Ahmed Haddaji</p>
+      <Credits />
     </div>
   );
 };
