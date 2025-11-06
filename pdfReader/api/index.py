@@ -294,3 +294,4 @@ def extract_grades_2():
         return jsonify({"success": False, "error": f"Error downloading PDF: {str(e)}"}), 500
     except Exception as e:
         return jsonify({"success": False, "error": f"Error processing PDF: {str(e)}"}), 500 
+
