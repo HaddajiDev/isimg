@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './lsim1.css';
 import Credits from './Credits';
+import Beams from './Backgrounds/Beams';
+import LightRays from './Backgrounds/LightRays';
 
 const LSIM2 = () => {
   const [grades, setGrades] = useState({
@@ -51,8 +53,25 @@ const LSIM2 = () => {
   const format = (val) => Number(val).toFixed(2);
 
   return (
+    <>
+
     <div className="container">
+      
       <header>
+        
+        <div className="silk-container">
+        <Beams
+            beamWidth={3}
+            beamHeight={30}
+            beamNumber={20}
+            lightColor="#9370DB"
+            speed={2}
+            noiseIntensity={1.75}
+            scale={0.2}
+            rotation={30}
+          />
+        </div>
+
         <h1>LSIM 2</h1>
       </header>
 
@@ -185,6 +204,7 @@ const LSIM2 = () => {
 
       <Credits />
     </div>
+    </>
   );
 };
 
