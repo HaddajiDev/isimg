@@ -89,6 +89,7 @@ module.exports = (db, bucket) => {
         }
     });
 
+    // lsim 1
     router.post('/data/pdf', upload.single('file'), async (req, res) => {
 
         if (!req.file) {
@@ -113,6 +114,42 @@ module.exports = (db, bucket) => {
                     const url = `https://isimg-pre-back.vercel.app/api/inspect/${uploadStream.id}`;
                     const response = await fetch(`https://isimg-python.vercel.app/extract?url=${encodeURIComponent(url)}&sem=${sem}`);
                     // const response = await fetch(`http://127.0.0.1:2000/extract?url=${encodeURIComponent(url)}&sem=${sem}`);
+                    const data = await response.json();                    
+                    res.status(200).send({pdf : JSON.stringify(data)});
+                });
+
+        } catch (error) {
+            console.error('Error during file upload:', error);
+            res.status(500).send("Error during file upload");
+        }
+    });
+
+    //lsim 2
+    router.post("/data/pdf/lsim2", upload.single('file'), async (req, res) =>{
+        
+        if (!req.file) {
+            return res.status(400).send("No file uploaded");
+        }
+
+
+        const sem = req.query.sem;
+        console.log(sem)
+        try {
+            const readableStream = new Readable();
+            readableStream.push(req.file.buffer);
+            readableStream.push(null);
+
+            const uploadStream = bucket.openUploadStream(req.file.originalname);
+
+            readableStream.pipe(uploadStream)
+                .on('error', (error) => {
+                    console.error('Error uploading file:', error);
+                    return res.status(500).send("File upload failed");
+                })
+                .on('finish', async() => {
+                    const url = `https://isimg-pre-back.vercel.app/api/inspect/${uploadStream.id}`;
+                    const response = await fetch(`https://isimg-python.vercel.app/extract/lsim2?url=${encodeURIComponent(url)}&sem=${sem}`);
+                    //const response = await fetch(`http://127.0.0.1:2000/extract/lsim2?url=${encodeURIComponent(url)}&sem=${sem}`);
                     const data = await response.json();                    
                     res.status(200).send({pdf : JSON.stringify(data)});
                 });

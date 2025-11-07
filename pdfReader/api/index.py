@@ -193,7 +193,7 @@ def extract_grades_2():
     oral = []
 
     try:
-        with pdfplumber.open() as pdf: #fix ts
+        with pdfplumber.open(download_pdf_from_url(pdf_url)) as pdf:
             for page in pdf.pages:                
                 tables = page.extract_tables()
                 for table in tables:
@@ -260,31 +260,31 @@ def extract_grades_2():
                         value['DS2'] = 0
 
         data = [
-                { 'subject': 'proba1', 'ds': grades["proba1"]["DS"], 'tp': grades["proba1"]["TP"], 'ex': grades["proba1"]["Ex"]},  
-                { 'subject': 'automat1', 'ds': grades["automat1"]["DS"], 'ex': grades["automat1"]["Ex"] },
-                { 'subject': 'graphe1', 'ds': grades["graphe1"]["DS"], 'ex': grades["graphe1"]["Ex"] },  
-                { 'subject': 'conception1', 'ds': grades["conception1"]["DS"], 'ex': grades["conception1"]["Ex"]},  
-                { 'subject': 'java1', 'ds': grades["java1"]["DS"], 'ex': grades["java1"]["Ex"], 'tp': grades["java1"]["TP"] },  
-                { 'subject': 'bd1', 'ds': grades["bd1"]["DS"], 'ex': grades["bd1"]["Ex"], 'tp': grades["bd1"]["TP"]},  
-                { 'subject': 'reseaux1', 'ds': grades["reseaux1"]["DS"], 'tp': grades["reseaux1"]["TP"], 'ex': grades["reseaux1"]["Ex"]},  
-                { 'subject': 'ang1', 'oral': grades["ang1"]["Oral"], 'ds': grades["ang1"]["DS"], 'ds2': grades["ang1"]["DS2"] },  
-                { 'subject': 'ges1','oral': grades["ges1"]["Oral"], 'ds': grades["ges1"]["DS"], 'ds2': grades["ges1"]["DS2"]},  
-                { 'subject': 'web1', 'ds': grades["web1"]["DS"], 'tp': grades["web1"]["TP"], 'ex': grades["web1"]["Ex"]},
-                { 'subject': 'animation1', 'ds': grades["animation1"]["DS"], 'tp': grades["animation1"]["TP"], 'ex': grades["animation1"]["Ex"]}
+            { 'subject': 'proba1', 'probads': grades["proba1"]["DS"], 'probatp': grades["proba1"]["TP"], 'probaex': grades["proba1"]["Ex"] },
+            { 'subject': 'automat1', 'automatesds': grades["automat1"]["DS"], 'automatesex': grades["automat1"]["Ex"] },
+            { 'subject': 'graphe1', 'graphesds': grades["graphe1"]["DS"], 'graphesex': grades["graphe1"]["Ex"] },
+            { 'subject': 'conception1', 'conceptionds': grades["conception1"]["DS"], 'conceptionex': grades["conception1"]["Ex"] },
+            { 'subject': 'java1', 'javads': grades["java1"]["DS"], 'javaex': grades["java1"]["Ex"], 'javatp': grades["java1"]["TP"] },
+            { 'subject': 'bd1', 'bsdds': grades["bd1"]["DS"], 'bsdex': grades["bd1"]["Ex"], 'bsdtp': grades["bd1"]["TP"] },
+            { 'subject': 'reseaux1', 'reseauxds': grades["reseaux1"]["DS"], 'reseauxtp': grades["reseaux1"]["TP"], 'reseauxex': grades["reseaux1"]["Ex"] },
+            { 'subject': 'ang1', 'anglaisoral': grades["ang1"]["Oral"], 'anglaisds1': grades["ang1"]["DS"], 'anglaisds2': grades["ang1"]["DS2"] },
+            { 'subject': 'ges1', 'gesoral': grades["ges1"]["Oral"], 'gesds1': grades["ges1"]["DS"], 'gesds2': grades["ges1"]["DS2"] },
+            { 'subject': 'web1', 'webds': grades["web1"]["DS"], 'webtp': grades["web1"]["TP"], 'webex': grades["web1"]["Ex"] },
+            { 'subject': 'animation1', 'animationds': grades["animation1"]["DS"], 'animationtp': grades["animation1"]["TP"], 'animationex': grades["animation1"]["Ex"] }
         ]
-        data2 =[
-                { 'subject': "num", 'ds': grades["num"]["DS"], 'ex': grades["num"]["Ex"]},
-                { 'subject': "tdi", 'ds': grades["tdi"]["DS"], 'tp': grades["tdi"]["TP"], 'ex': grades["tdi"]["Ex"]},
-                { 'subject': "ig", 'd,': grades["ig"]["DS"], 'tp': grades["ig"]["TP"], 'ex': grades["ig"]["Ex"]},
-                { 'subject': "web2", 'ds': grades["web2"]["DS"], 'tp': grades["web2"]["TP"], 'ex': grades["web2"]["Ex"]},
-                { 'subject': "appm", 'ds': grades["appm"]["DS"], 'tp': grades["appm"]["TP"], 'ex': grades["appm"]["Ex"]},
-                { 'subject': "ai", 'ds': grades["ai"]["DS"], 'tp': grades["ai"]["TP"], 'ex': grades["ai"]["Ex"]},
-                { 'subject': "test", 'ds': grades["test"]["DS"], 'tp': grades["test"]["TP"], 'ex': grades["test"]["Ex"]},
-                { 'subject': "ang2", 'ds': grades["ang2"]["DS"], 'oral': grades["ang2"]["Oral"], 'ds2': grades["ang2"]["DS2"]},
-                { 'subject': "droit", 'ds': grades["droit"]["DS"], 'oral': grades["droit"]["Oral"], 'ds2': grades["droit"]["DS2"]},
-                { 'subject': "projet", 'ds': grades["projet"]["DS"], 'tp': grades["projet"]["TP"], 'ds2': grades["projet"]["DS2"]},
-                { 'subject': "web3", 'ds': grades["web3"]["DS"], 'tp': grades["web3"]["TP"], 'ex': grades["web3"]["Ex"]},
-                { 'subject': "cross", 'ds': grades["cross"]["DS"], 'tp': grades["cross"]["TP"], 'ex': grades["cross"]["Ex"]}
+        data2 = [
+            { 'subject': 'num', 'numds': grades["num"]["DS"], 'numex': grades["num"]["Ex"] },
+            { 'subject': 'tdi', 'tdids': grades["tdi"]["DS"], 'tditp': grades["tdi"]["TP"], 'tdiex': grades["tdi"]["Ex"] },
+            { 'subject': 'ig', 'igds': grades["ig"]["DS"], 'igtp': grades["ig"]["TP"], 'igex': grades["ig"]["Ex"] },
+            { 'subject': 'web2', 'web2ds': grades["web2"]["DS"], 'web2tp': grades["web2"]["TP"], 'web2ex': grades["web2"]["Ex"] },
+            { 'subject': 'appm', 'appmds': grades["appm"]["DS"], 'appmtp': grades["appm"]["TP"], 'appmex': grades["appm"]["Ex"] },
+            { 'subject': 'ai', 'aids': grades["ai"]["DS"], 'aitp': grades["ai"]["TP"], 'aiex': grades["ai"]["Ex"] },
+            { 'subject': 'test', 'testds': grades["test"]["DS"], 'testtp': grades["test"]["TP"], 'testex': grades["test"]["Ex"] },
+            { 'subject': 'ang2', 'ang2ds1': grades["ang2"]["DS"], 'ang2oral': grades["ang2"]["Oral"], 'ang2ds2': grades["ang2"]["DS2"] },
+            { 'subject': 'droit', 'droitds1': grades["droit"]["DS"], 'droitoral': grades["droit"]["Oral"], 'droitds2': grades["droit"]["DS2"] },
+            { 'subject': 'projet', 'projetds1': grades["projet"]["DS"], 'projettp': grades["projet"]["TP"], 'projetds2': grades["projet"]["DS2"] },
+            { 'subject': 'web3', 'web3ds': grades["web3"]["DS"], 'web3tp': grades["web3"]["TP"], 'web3ex': grades["web3"]["Ex"] },
+            { 'subject': 'cross', 'crossds': grades["cross"]["DS"], 'crosstp': grades["cross"]["TP"], 'crossex': grades["cross"]["Ex"] }
         ]
 
         final_data = data if sem == "1" else data2
@@ -295,3 +295,7 @@ def extract_grades_2():
     except Exception as e:
         return jsonify({"success": False, "error": f"Error processing PDF: {str(e)}"}), 500 
 
+
+# if __name__ == "__main__":
+#     Flask.run(app, port=2000)
+#     pass
