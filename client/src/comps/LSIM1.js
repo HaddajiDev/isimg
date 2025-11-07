@@ -262,12 +262,14 @@ const LSIM1 = () => {
         <FileUploadModal 
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}  
-            sem={activeSemester === "sem1" ? 1 : 2}          
+            sem={activeSemester === "sem1" ? 1 : 2}  
+            section={"lsim2"}
         />
         <PdfFileUpload 
           isOpen={isOpenPdf}
           onClose={() => setIsOpenPdf(false)}
           sem={activeSemester === "sem1" ? 1 : 2}
+          section={"lsim2"}
          />
          <PdfInfoModal 
           isOpen={showPdfInfo} 
