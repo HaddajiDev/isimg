@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import './lsim1.css';
 import Credits from './Credits';
 import Beams from './Backgrounds/Beams';
@@ -214,12 +214,61 @@ const LSIM2 = () => {
       console.error('Data loading error:', err);
     }
   }
+  const sem1Keys = useMemo(() => Object.keys(sem1), []);
+  const sem2Keys = useMemo(() => Object.keys(sem2), []);
+  const handleUnifiedDataLoad = (combinedData) => {
+      try {
+        if (!Array.isArray(combinedData)) {
+          throw new Error('Invalid data format: Expected a unified array of subjects');
+        }
+
+        let newSem1 = { ...sem1 };
+        let newSem2 = { ...sem2 };
+
+        combinedData.forEach(subject => {
+          if (typeof subject !== 'object' || subject === null) {
+            console.warn('Skipping invalid subject format:', subject);
+            return;
+          }
+
+          Object.entries(subject).forEach(([key, value]) => {
+            if (key === 'subject') return;
+            
+            const gradeValue = Number(value);
+            if (isNaN(gradeValue)) return; 
+            
+            if (sem1Keys.includes(key)) {
+              if (newSem1[key] === 0) {
+                newSem1[key] = gradeValue;
+              }
+            } 
+            else if (sem2Keys.includes(key)) {
+              if (newSem2[key] === 0) {
+                newSem2[key] = gradeValue;
+              }
+            } 
+            else {
+              console.warn(`Unknown property skipped: ${key} (Does not match S1 or S2 keys)`);
+            }
+          });
+        });
+
+        setSem1(newSem1);
+        setSem2(newSem2);
+        setError(null);
+
+      } catch (err) {
+        setError(err.message);
+        console.error('Unified data loading error:', err);
+      }
+    };
   
   useEffect(() => {
     if (data) {
       try {
         const initialData = JSON.parse(data);
-        activeSemester === "sem1" ? loadDataIntoInputs(initialData) : loadDataIntoInputs_2(initialData);
+        handleUnifiedDataLoad(initialData);
+        //activeSemester === "sem1" ? loadDataIntoInputs(initialData) : loadDataIntoInputs_2(initialData);
       } catch (parseError) {
         setError(`Invalid JSON format: ${parseError.message}`);
         console.error('JSON parsing error:', parseError);

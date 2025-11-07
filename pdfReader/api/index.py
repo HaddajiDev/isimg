@@ -270,9 +270,7 @@ def extract_grades_2():
             { 'subject': 'ang1', 'anglaisoral': grades["ang1"]["Oral"], 'anglaisds1': grades["ang1"]["DS"], 'anglaisds2': grades["ang1"]["DS2"] },
             { 'subject': 'ges1', 'gesoral': grades["ges1"]["Oral"], 'gesds1': grades["ges1"]["DS"], 'gesds2': grades["ges1"]["DS2"] },
             { 'subject': 'web1', 'webds': grades["web1"]["DS"], 'webtp': grades["web1"]["TP"], 'webex': grades["web1"]["Ex"] },
-            { 'subject': 'animation1', 'animationds': grades["animation1"]["DS"], 'animationtp': grades["animation1"]["TP"], 'animationex': grades["animation1"]["Ex"] }
-        ]
-        data2 = [
+            { 'subject': 'animation1', 'animationds': grades["animation1"]["DS"], 'animationtp': grades["animation1"]["TP"], 'animationex': grades["animation1"]["Ex"] },
             { 'subject': 'num', 'numds': grades["num"]["DS"], 'numex': grades["num"]["Ex"] },
             { 'subject': 'tdi', 'tdids': grades["tdi"]["DS"], 'tditp': grades["tdi"]["TP"], 'tdiex': grades["tdi"]["Ex"] },
             { 'subject': 'ig', 'igds': grades["ig"]["DS"], 'igtp': grades["ig"]["TP"], 'igex': grades["ig"]["Ex"] },
@@ -286,9 +284,12 @@ def extract_grades_2():
             { 'subject': 'web3', 'web3ds': grades["web3"]["DS"], 'web3tp': grades["web3"]["TP"], 'web3ex': grades["web3"]["Ex"] },
             { 'subject': 'cross', 'crossds': grades["cross"]["DS"], 'crosstp': grades["cross"]["TP"], 'crossex': grades["cross"]["Ex"] }
         ]
+        data2 = [
+
+        ]
 
         final_data = data if sem == "1" else data2
-        return jsonify(final_data)
+        return jsonify(data)
 
     except requests.RequestException as e:
         return jsonify({"success": False, "error": f"Error downloading PDF: {str(e)}"}), 500
