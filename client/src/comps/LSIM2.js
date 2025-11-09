@@ -1,9 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import './lsim1.css';
 import Credits from './Credits';
 import Beams from './Backgrounds/Beams';
-import LightRays from './Backgrounds/LightRays';
-import { getData } from '../redux/FileSlice';
+
 import FileUploadModal from './FileUploadModal';
 import PdfFileUpload from './PdfFileUpload';
 import PdfInfoModal from './PdfInfoModal';
@@ -138,82 +137,82 @@ const LSIM2 = () => {
 
   const [error, setError] = useState(null);
 
-  const loadDataIntoInputs = (data) => {
-    try {
-      if (!Array.isArray(data)) {
-        throw new Error('Invalid data format: Expected an array of subjects');
-      }
+  // const loadDataIntoInputs = (data) => {
+  //   try {
+  //     if (!Array.isArray(data)) {
+  //       throw new Error('Invalid data format: Expected an array of subjects');
+  //     }
   
-      const newSem1 = { ...sem1 };
+  //     const newSem1 = { ...sem1 };
       
-      data.forEach(subject => {
-        if (typeof subject !== 'object' || subject === null) {
-          throw new Error('Invalid subject format: Expected an object');
-        }
+  //     data.forEach(subject => {
+  //       if (typeof subject !== 'object' || subject === null) {
+  //         throw new Error('Invalid subject format: Expected an object');
+  //       }
   
-        Object.entries(subject).forEach(([key, value]) => {
-          if (key === 'subject') return;
+  //       Object.entries(subject).forEach(([key, value]) => {
+  //         if (key === 'subject') return;
   
-          if (!newSem1.hasOwnProperty(key)) {
-            throw new Error(`Unknown property detected: ${key}`);
-          }
+  //         if (!newSem1.hasOwnProperty(key)) {
+  //           throw new Error(`Unknown property detected: ${key}`);
+  //         }
   
-          if (typeof value !== 'number') {
-            throw new Error(`Invalid value type for ${key}: Expected number, got ${typeof value}`);
-          }
+  //         if (typeof value !== 'number') {
+  //           throw new Error(`Invalid value type for ${key}: Expected number, got ${typeof value}`);
+  //         }
   
-          if (newSem1[key] === 0) {
-            newSem1[key] = value;
-          }
-        });
-      });
+  //         if (newSem1[key] === 0) {
+  //           newSem1[key] = value;
+  //         }
+  //       });
+  //     });
   
-      setSem1(newSem1);
-      setError(null);
-    } catch (err) {
-      setError(err.message);
-      console.error('Data loading error:', err);
-    }
-  };
+  //     setSem1(newSem1);
+  //     setError(null);
+  //   } catch (err) {
+  //     setError(err.message);
+  //     console.error('Data loading error:', err);
+  //   }
+  // };
 
 
-  const loadDataIntoInputs_2 = (data) => {
-    try {
-      if (!Array.isArray(data)) {
-        throw new Error('Invalid data format: Expected an array of subjects');
-      }
+  // const loadDataIntoInputs_2 = (data) => {
+  //   try {
+  //     if (!Array.isArray(data)) {
+  //       throw new Error('Invalid data format: Expected an array of subjects');
+  //     }
   
-      const newSem2 = { ...sem2 };
+  //     const newSem2 = { ...sem2 };
       
-      data.forEach(subject => {
-        if (typeof subject !== 'object' || subject === null) {
-          throw new Error('Invalid subject format: Expected an object');
-        }
+  //     data.forEach(subject => {
+  //       if (typeof subject !== 'object' || subject === null) {
+  //         throw new Error('Invalid subject format: Expected an object');
+  //       }
   
-        Object.entries(subject).forEach(([key, value]) => {
-          if (key === 'subject') return;
+  //       Object.entries(subject).forEach(([key, value]) => {
+  //         if (key === 'subject') return;
   
-          if (!newSem2.hasOwnProperty(key)) {
-            throw new Error(`Unknown property detected: ${key}`);
-          }
+  //         if (!newSem2.hasOwnProperty(key)) {
+  //           throw new Error(`Unknown property detected: ${key}`);
+  //         }
   
-          if (typeof value !== 'number') {
-            throw new Error(`Invalid value type for ${key}: Expected number, got ${typeof value}`);
-          }
+  //         if (typeof value !== 'number') {
+  //           throw new Error(`Invalid value type for ${key}: Expected number, got ${typeof value}`);
+  //         }
   
-          if (newSem2[key] === 0) {
-            newSem2[key] = value;
-          }
-        });
-      });
+  //         if (newSem2[key] === 0) {
+  //           newSem2[key] = value;
+  //         }
+  //       });
+  //     });
   
-      setSem2(newSem2);
-      setError(null);
-    } catch (err) {
-      setError(err.message);
-      console.error('Data loading error:', err);
-    }
-  }
+  //     setSem2(newSem2);
+  //     setError(null);
+  //   } catch (err) {
+  //     setError(err.message);
+  //     console.error('Data loading error:', err);
+  //   }
+  // }
   const sem1Keys = useMemo(() => Object.keys(sem1), []);
   const sem2Keys = useMemo(() => Object.keys(sem2), []);
   const handleUnifiedDataLoad = (combinedData) => {
