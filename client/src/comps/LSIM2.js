@@ -339,7 +339,7 @@ const LSIM2 = () => {
             className="btn-new"
             onClick={() => setIsOpenPdf(true)}
           >
-            <span>Upload PDF (BETA)</span>
+            <span>Upload PDF</span>
           </button> 
           <button
             className="pdf-info"
