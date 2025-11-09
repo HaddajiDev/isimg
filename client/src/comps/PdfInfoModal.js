@@ -13,7 +13,7 @@ const PdfInfoModal = ({ isOpen, onClose }) => {
         </div>
         <div className="modal-body info-content">
           <img 
-            src="https://res-console.cloudinary.com/dqkvgv7mh/thumbnails/v1/image/upload/v1762693733/U2NyZWVuc2hvdF8yMDI1MDIyMy0xMTUxMDFfQ2hyb21lX2xnY3dmcA==/drilldown" 
+            src="https://res.cloudinary.com/dqkvgv7mh/image/upload/v1762693733/Screenshot_20250223-115101_Chrome_lgcwfp.jpg" 
             alt="PDF upload instructions" 
             className="guide-image"
           />
