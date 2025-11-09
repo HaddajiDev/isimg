@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useDispatch } from 'react-redux';
 import './modal.css';
-import { getData, getDataPdf, getDataPdfLSIM2 } from '../redux/FileSlice';
+import { getDataPdf, getDataPdfLSIM2 } from '../redux/FileSlice';
 
 const PdfFileUpload = ({ isOpen, onClose, sem, section }) => {
   const [file, setFile] = useState(null);

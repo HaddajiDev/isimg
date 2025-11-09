@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import './lsim1.css';
-import { getData } from '../redux/FileSlice';
 import FileUploadModal from './FileUploadModal';
 import PdfFileUpload from './PdfFileUpload';
 import PdfInfoModal from './PdfInfoModal';
