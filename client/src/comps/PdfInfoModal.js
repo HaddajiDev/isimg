@@ -13,7 +13,7 @@ const PdfInfoModal = ({ isOpen, onClose }) => {
         </div>
         <div className="modal-body info-content">
           <img 
-            src="https://savage-files-cdn.vercel.app/files/inspect/67bafde68966c22c8b077744" 
+            src="https://res-console.cloudinary.com/dqkvgv7mh/thumbnails/v1/image/upload/v1762693733/U2NyZWVuc2hvdF8yMDI1MDIyMy0xMTUxMDFfQ2hyb21lX2xnY3dmcA==/drilldown" 
             alt="PDF upload instructions" 
             className="guide-image"
           />
