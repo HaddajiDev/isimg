@@ -22,11 +22,11 @@ const BACK = process.env.BACK;
 
 module.exports = (db, bucket) => {
 
-    // router.use((req, res, next) => {
-    //     res.header('Access-Control-Allow-Origin', '*');
-    //     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Range');
-    //     next();
-    // });
+    router.use((req, res, next) => {
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Range');
+        next();
+    });
 
     router.post('/data', upload.array('files'), async (req, res) => {    
         if (!req.files || req.files.length === 0) {
@@ -377,6 +377,9 @@ IMPORTANT RULES:
 7. Be accurate with the semester assignment - verify which semester each subject belongs to
 8 - Do not assume fixed values for "cs" — always extract the actual number from the text (e.g. Ex (0.5) → "cs": 0.5).
 9 - If the same exam type appears more than once for a subject (e.g., two DS entries), label them sequentially as "DS" and "DS2", "TP" and "TP2", etc. 
+10 - Ignore unit titles:
+    - Lines or boxes like "Mathématiques 1 – Crédits = 5" or "Systèmes Embarqués – Crédits = 8" represent unit headers (unité d'enseignement), not subjects.
+    - Do not include them in the JSON output.
 
 Expected JSON structure:
 {
