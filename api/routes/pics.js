@@ -153,7 +153,7 @@ module.exports = (db, bucket) => {
                     const url = `https://isimg-pre-back.vercel.app/api/inspect/${uploadStream.id}`;
                     const response = await fetch(`https://isimg-python.vercel.app/extract/lsim2?url=${encodeURIComponent(url)}&sem=${sem}`);
                     //const response = await fetch(`http://127.0.0.1:2000/extract/lsim2?url=${encodeURIComponent(url)}&sem=${sem}`);
-                    const data = await response.json();                    
+                    const data = await response.json();
                     res.status(200).send({pdf : JSON.stringify(data)});
                 });
 
@@ -188,8 +188,8 @@ module.exports = (db, bucket) => {
                 })
                 .on('finish', async() => {
                     const response = await GetPdfDataAny(pdfData)
-                    // const data = await response.json();                    
-                    res.status(200).send({pdf : JSON.stringify(response)});
+                    //const data = await response.                  
+                    res.status(200).send({pdf : response});
                 });
 
         } catch (error) {
@@ -366,12 +366,17 @@ IMPORTANT RULES:
    - Coefficient (Coeff)
    - Credits
    - Exam types and scores (épreuves)
-   - Number after the type eg (EX (0.7)) => 0.7 call it cs
+   - notes: list of exam components, each containing:
+            -"type" → the label (e.g., DS, DS2, TP, Ex, Oral, etc) - extract dynamically
+            -"cs" → the number found in parentheses beside the type (as float)
+            -"note" → the numeric score beside it (as float)
 3. If a note/score does not exist, use 0 (e.g., "ds": 0)
 4. If sem2 does not exist in the document, return an empty array for sem2: []
 5. Extract Filière (field of study) and Niveau (level/year)
 6. Return ONLY valid JSON - no markdown, no code blocks, no backticks, no \\n characters
 7. Be accurate with the semester assignment - verify which semester each subject belongs to
+8 - Do not assume fixed values for "cs" — always extract the actual number from the text (e.g. Ex (0.5) → "cs": 0.5).
+9 - If the same exam type appears more than once for a subject (e.g., two DS entries), label them sequentially as "DS" and "DS2", "TP" and "TP2", etc. 
 
 Expected JSON structure:
 {
@@ -382,10 +387,11 @@ Expected JSON structure:
       "matiere": "Subject Name",
       "coeff": 0,
       "credits": 0,
-      "notes": {
-        eg: ds, ds2, oral, tp, examan
-        example ex: [score, number beside (cs)]
-      }
+      "notes": [
+        { "type": "ds", "cs": 0.15, "note": 3.5 },
+        { "type": "tp", "cs": 0.15, "note": 14 },
+        { "type": "ex", "cs": 0.7, "note": 1 }
+      ]
     }
   ],
   "sem2": []
