@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useDispatch } from 'react-redux';
 import './modal.css';
-import { getDataPdf, getDataPdfLSIM2 } from '../redux/FileSlice';
+import { getDataPdf, getDataPdfAny, getDataPdfLSIM2 } from '../redux/FileSlice';
 
 const PdfFileUpload = ({ isOpen, onClose, sem, section }) => {
   const [file, setFile] = useState(null);
@@ -43,6 +43,9 @@ const PdfFileUpload = ({ isOpen, onClose, sem, section }) => {
       }
       if(section === "lsim2"){
         await dispatch(getDataPdfLSIM2({formData: formData, sem: sem})).unwrap();
+      }
+      if(section === "any"){
+        await dispatch(getDataPdfAny({formData: formData})).unwrap();
       }
 
       setStatus('AI analysis...');

@@ -6,7 +6,13 @@ import Credits from "./Credits"
 
 function Home() {
   const navigate = useNavigate()
-
+  const isFilierePersonnaliseeDisabled = true;
+  const handleNavigate = (path) => {
+      if (path === "/dynamic-class" && isFilierePersonnaliseeDisabled) {
+          return; 
+      }
+      navigate(path);
+  };
   return (
     <div className="over">
       <div className="silk-container">
@@ -29,8 +35,19 @@ function Home() {
             <a className="nav-button" onClick={() => navigate("/lsim2")}>
               LSIM 2
             </a>
-          </div>
+            
+            <hr className="nav-separator" />
 
+            <a 
+              onClick={() => handleNavigate("/dynamic-class")}
+              className={`nav-button ${isFilierePersonnaliseeDisabled ? 'disabled' : ''}`}
+              href={isFilierePersonnaliseeDisabled ? '#' : '/dynamic-class'}
+            >
+              Filière Personnalisée (BETA) (coming soon)
+            </a>
+            <hr className="nav-separator" />
+
+          </div>
           <a
             href="https://github.com/nxxte/isimg"
             target="_blank"

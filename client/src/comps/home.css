@@ -435,3 +435,22 @@
   .credits-name{
     color: #8c7ff7;
   }
+
+
+.nav-separator {
+  border: none;
+  height: 1px;
+  background-color:  #8c7ff7;
+  width: 80%;
+  margin: 0.5rem auto;
+  opacity: 0.7;
+}
+
+
+.nav-button.disabled {
+  opacity: 0.5; 
+  cursor: not-allowed;
+  
+  pointer-events: none;   
+
+}

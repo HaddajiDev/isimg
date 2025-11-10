@@ -107,7 +107,7 @@ const LSIM1 = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const data = useSelector(state => state.file.data);  
-
+  const finalData = data ? data : localStorage.getItem("lsim1");
   const [error, setError] = useState(null);
 
   const loadDataIntoInputs = (data) => {
@@ -188,7 +188,7 @@ const LSIM1 = () => {
   }
   
   useEffect(() => {
-    if (data) {
+    if (finalData) {
       try {
         const initialData = JSON.parse(data);
         activeSemester === "sem1" ? loadDataIntoInputs(initialData) : loadDataIntoInputs_2(initialData);
@@ -197,7 +197,7 @@ const LSIM1 = () => {
         console.error('JSON parsing error:', parseError);
       }
     }
-  }, [data]);  
+  }, [finalData]);
 
   const [isOpenPdf, setIsOpenPdf] = useState(false);
   const [showPdfInfo, setShowPdfInfo] = useState(false);

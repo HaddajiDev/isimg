@@ -68,6 +68,21 @@ export const getDataPdfLSIM2 = createAsyncThunk('data/pdflisim2', async ({formDa
 });
 
 
+export const getDataPdfAny = createAsyncThunk('data/pdfany', async ({formData}, { rejectWithValue }) => {
+  try {
+    const result = await axios.post(`http://localhost:5000/api/data/pdf/any`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return result.data;
+  } catch (error) {
+    console.error('Axios Error:', error.response?.data);
+    return rejectWithValue(error.response?.data || error.message);
+  }
+});
+
+
 const initialState = {
     data: null,
 }
@@ -81,12 +96,19 @@ export const FileSlice = createSlice({
         builder
         .addCase(getData.fulfilled, (state, action) => {
             state.data = action.payload.ai;
+            localStorage.setItem("lsim1", action.payload.ai);
         })
         .addCase(getDataPdf.fulfilled, (state, action) => {
           state.data = action.payload.pdf;
+          localStorage.setItem("lsim1", action.payload.pdf);
         })
         .addCase(getDataPdfLSIM2.fulfilled, (state, action) => {
           state.data = action.payload.pdf;
+          localStorage.setItem("lsim2", action.payload.pdf);
+        })
+        .addCase(getDataPdfAny.fulfilled, (state, action) => {
+          state.data = action.payload.pdf;
+          localStorage.setItem("any", action.payload.pdf);
         })
 
     }
