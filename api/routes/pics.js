@@ -6,6 +6,9 @@ const multer = require('multer');
 const { Readable } = require('stream');
 const storage = multer.memoryStorage();
 const upload = multer({ storage });  
+const pdf = require('pdf-parse-new');
+
+
 
 const client = new OpenAi({
     baseURL: process.env.BASE_URL,
@@ -152,6 +155,41 @@ module.exports = (db, bucket) => {
                     //const response = await fetch(`http://127.0.0.1:2000/extract/lsim2?url=${encodeURIComponent(url)}&sem=${sem}`);
                     const data = await response.json();                    
                     res.status(200).send({pdf : JSON.stringify(data)});
+                });
+
+        } catch (error) {
+            console.error('Error during file upload:', error);
+            res.status(500).send("Error during file upload");
+        }
+    });
+
+    //any
+    router.post("/data/pdf/any", upload.single('file'), async (req, res) =>{
+        
+        if (!req.file) {
+            return res.status(400).send("No file uploaded");
+        }
+
+        try {
+
+            const buffer = await pdf(req.file.buffer);
+            const pdfData = buffer.text;
+
+            const readableStream = new Readable();
+            readableStream.push(req.file.buffer);
+            readableStream.push(null);
+
+            const uploadStream = bucket.openUploadStream(req.file.originalname);
+
+            readableStream.pipe(uploadStream)
+                .on('error', (error) => {
+                    console.error('Error uploading file:', error);
+                    return res.status(500).send("File upload failed");
+                })
+                .on('finish', async() => {
+                    const response = await GetPdfDataAny(pdfData)
+                    // const data = await response.json();                    
+                    res.status(200).send({pdf : JSON.stringify(response)});
                 });
 
         } catch (error) {
@@ -312,4 +350,63 @@ async function GetData(urls, sem) {
         console.error('Error in GetData:', error);
         throw error;
     }
+}
+
+
+async function GetPdfDataAny(pdfText) {
+    const messages = [
+        {
+            role: "system",
+            content: `You are a precise data extraction assistant. Extract academic subject information from the provided PDF text and return it in a clean JSON format.
+
+IMPORTANT RULES:
+1. Extract subjects organized by semester (sem1, sem2)
+2. For each subject, extract:
+   - Subject name (Matière)
+   - Coefficient (Coeff)
+   - Credits
+   - Exam types and scores (épreuves)
+   - Number after the type eg (EX (0.7)) => 0.7 call it cs
+3. If a note/score does not exist, use 0 (e.g., "ds": 0)
+4. If sem2 does not exist in the document, return an empty array for sem2: []
+5. Extract Filière (field of study) and Niveau (level/year)
+6. Return ONLY valid JSON - no markdown, no code blocks, no backticks, no \\n characters
+7. Be accurate with the semester assignment - verify which semester each subject belongs to
+
+Expected JSON structure:
+{
+  "filiere": "...",
+  "niveau": "...",
+  "sem1": [
+    {
+      "matiere": "Subject Name",
+      "coeff": 0,
+      "credits": 0,
+      "notes": {
+        eg: ds, ds2, oral, tp, examan
+        example ex: [score, number beside (cs)]
+      }
+    }
+  ],
+  "sem2": []
+}`
+        },
+        {
+            role: "user",
+            content: [
+                { type: "text", text: "Extract the subjects based on their semester from this PDF" },
+                { type: "text", text: pdfText }
+            ]
+        }
+    ];
+
+    const completion = await client.chat.completions.create({
+        model: process.env.MODEL,
+        messages: messages
+    });
+
+    const aiResponse = completion.choices[0].message.content;
+    const finalResponse = aiResponse.replace(/```json|```/g, '');
+    console.log(finalResponse);
+    return finalResponse;
 }
