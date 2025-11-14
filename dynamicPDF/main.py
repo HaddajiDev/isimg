@@ -48,7 +48,7 @@ def extract_matiere(image_path, target_char):
     start_x = 800 
     x_end = 1130 
 
-    reader = easyocr.Reader(['fr'])
+    reader = easyocr.Reader(['fr'], gpu=False)
     try:
         img = Image.open(image_path)
         img_height = img.size[1]
