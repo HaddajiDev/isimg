@@ -165,11 +165,6 @@ module.exports = (db, bucket) => {
 
     //any
     router.post("/data/pdf/any", upload.single('file'), async (req, res) =>{
-
-        res.header('Access-Control-Allow-Origin', 'https://isimg.vercel.app');
-        res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
-        res.header('Access-Control-Allow-Headers', 'Content-Type');
-
         
         if (!req.file) {
             return res.status(400).send("No file uploaded");
@@ -191,7 +186,7 @@ module.exports = (db, bucket) => {
                 .on('finish', async() => {
                     //const response = await GetPdfDataAny(pdfData)
                     //const data = await response.
-                    const url = `https://isimg-pre-back.vercel.app/api/inspect/${uploadStream.id}`;
+                    const url = `https://isimg-pre-back.onrender.com/api/inspect/${uploadStream.id}`;
                     const response = await fetch('https://isimg-dynamic-pdf.onrender.com/extract', {
                     method: 'POST',
                     headers: {
