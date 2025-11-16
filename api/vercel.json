@@ -1,17 +1,18 @@
 {
-    "version":2,
-    "builds": [
-      { "src": "*.js", "use": "@vercel/node" }
-    ],
-    "routes": [
-        {
-          "src": "/(.*)",
-          "dest": "/"
-        }
-    ],
-    "functions": {
-      "*.js": {
+  "version": 2,
+  "builds": [
+    { 
+      "src": "*.js", 
+      "use": "@vercel/node",
+      "config": {
         "maxDuration": 200
       }
     }
-  }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
+  ]
+}
