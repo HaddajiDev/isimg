@@ -196,8 +196,10 @@ module.exports = (db, bucket) => {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Connection': 'keep-alive',
                     },
                         body: JSON.stringify({ pdf_url: url }),
+                        keepalive: true,
                     });
 
                     const data = await response.json();
