@@ -1,0 +1,328 @@
+.funny-spinner-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #1a0f2e 0%, #2d1b4e 100%);
+  min-height: 100%;
+}
+
+/* ==================== MAIN SPINNER ==================== */
+.spinner-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+/* Pulsing background circle */
+.pulse-background {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(147, 51, 234, 0.3) 0%, transparent 70%);
+  animation: pulsePulse 2s ease-in-out infinite;
+}
+
+@keyframes pulsePulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.3);
+    opacity: 0.5;
+  }
+}
+
+/* Main spinning orb */
+.spinning-orb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    #a78bfa 0%,
+    #8b5cf6 25%,
+    #7c3aed 50%,
+    #6d28d9 75%,
+    #a78bfa 100%
+  );
+  animation: spinSpin 3s linear infinite;
+  box-shadow: 0 0 20px rgba(147, 51, 234, 0.6),
+              inset -2px -2px 8px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes spinSpin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Orbiting particles */
+.particles {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  transform: translate(-50%, -50%);
+}
+
+.particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  top: 0;
+  left: 50%;
+  margin-left: -4px;
+}
+
+.particle.p1 {
+  background: #c084fc;
+  animation: orbit 4s linear infinite;
+}
+
+.particle.p2 {
+  background: #a78bfa;
+  animation: orbit 4s linear infinite -1.3s;
+}
+
+.particle.p3 {
+  background: #8b5cf6;
+  animation: orbit 4s linear infinite -2.6s;
+}
+
+@keyframes orbit {
+  0% {
+    transform: rotate(0deg) translateY(-50px) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: rotate(360deg) translateY(-50px) rotate(-360deg);
+    opacity: 1;
+  }
+}
+
+/* Rotating ring */
+.rotating-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  border: 3px solid transparent;
+  border-top: 3px solid #a78bfa;
+  border-right: 3px solid #8b5cf6;
+  border-radius: 50%;
+  animation: ringRotate 2s linear infinite reverse;
+  box-shadow: 0 0 15px rgba(167, 139, 250, 0.4);
+}
+
+@keyframes ringRotate {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Bouncing dots inside */
+.bouncing-dots {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.bouncing-dots .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fbbf24;
+  animation: bounce 1s ease-in-out infinite;
+}
+
+.bouncing-dots .dot:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.bouncing-dots .dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.bouncing-dots .dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-15px);
+    opacity: 0.6;
+  }
+}
+
+/* ==================== TEXT & MESSAGES ==================== */
+.funny-messages {
+  text-align: center;
+  max-width: 300px;
+}
+
+.status-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #c084fc;
+  margin: 0;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+  animation: textGlow 2s ease-in-out infinite;
+}
+
+@keyframes textGlow {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(192, 132, 252, 0.4);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(167, 139, 250, 0.8);
+  }
+}
+
+.loading-quotes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #a78bfa;
+  font-style: italic;
+  animation: fadeInOut 3s ease-in-out infinite;
+}
+
+.loading-quotes span {
+  font-size: 20px;
+  animation: spin 2s linear infinite;
+}
+
+.loading-quotes p {
+  margin: 0;
+}
+
+@keyframes fadeInOut {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==================== ANIMATED DOTS ==================== */
+.animated-loader {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.animated-loader span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+  animation: jump 1.4s ease-in-out infinite;
+  box-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
+}
+
+.animated-loader span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.animated-loader span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.animated-loader span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.animated-loader span:nth-child(4) {
+  animation-delay: 0.6s;
+}
+
+@keyframes jump {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-20px) scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+  .funny-spinner-wrapper {
+    gap: 30px;
+  }
+
+  .spinner-container {
+    width: 100px;
+    height: 100px;
+  }
+
+  .spinning-orb {
+    width: 50px;
+    height: 50px;
+  }
+
+  .rotating-ring {
+    width: 80px;
+    height: 80px;
+  }
+
+  .particles {
+    width: 80px;
+    height: 80px;
+  }
+
+  .status-text {
+    font-size: 16px;
+  }
+}

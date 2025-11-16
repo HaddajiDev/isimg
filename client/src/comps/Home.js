@@ -6,7 +6,7 @@ import Credits from "./Credits"
 
 function Home() {
   const navigate = useNavigate()
-  const isFilierePersonnaliseeDisabled = true;
+  const isFilierePersonnaliseeDisabled = false;
   const handleNavigate = (path) => {
       if (path === "/dynamic-class" && isFilierePersonnaliseeDisabled) {
           return; 
@@ -43,7 +43,7 @@ function Home() {
               className={`nav-button ${isFilierePersonnaliseeDisabled ? 'disabled' : ''}`}
               href={isFilierePersonnaliseeDisabled ? '#' : '/dynamic-class'}
             >
-              Filière Personnalisée (BETA) (coming soon)
+              Filière Personnalisée (BETA)
             </a>
             <hr className="nav-separator" />
 

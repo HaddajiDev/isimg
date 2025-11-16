@@ -3,6 +3,7 @@ import { useDropzone } from 'react-dropzone';
 import { useDispatch } from 'react-redux';
 import './modal.css';
 import { getDataPdf, getDataPdfAny, getDataPdfLSIM2 } from '../redux/FileSlice';
+import FunnySpinner from './FunnySpinner';
 
 const PdfFileUpload = ({ isOpen, onClose, sem, section }) => {
   const [file, setFile] = useState(null);
@@ -33,7 +34,7 @@ const PdfFileUpload = ({ isOpen, onClose, sem, section }) => {
     setIsLoading(true);
     setError('');
     try {
-      setStatus('Uploading to cloud...');
+      setStatus(section === "any" ? "This will take couple minutes" : "Uploading to cloud...");
       const formData = new FormData();
       formData.append('file', file);
 
@@ -48,7 +49,7 @@ const PdfFileUpload = ({ isOpen, onClose, sem, section }) => {
         await dispatch(getDataPdfAny({formData: formData})).unwrap();
       }
 
-      setStatus('AI analysis...');
+      setStatus(section === "any" ? "hy hw cbon" : "AI analysis...");
       await new Promise(resolve => setTimeout(resolve, 1500));
 
       setFile(null);
@@ -70,7 +71,12 @@ const PdfFileUpload = ({ isOpen, onClose, sem, section }) => {
 
   return (
     <div className="modal-overlay">
-      {isLoading && (
+      {isLoading && section === 'any' && (
+        <div className="processing-overlay">
+          <FunnySpinner status={status} />
+        </div>
+      )}
+      {isLoading && section !== 'any' && (
         <div className="processing-overlay">
           <div className="spinner-container-1">
             <div className="spinner-1">

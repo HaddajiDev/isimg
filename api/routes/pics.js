@@ -170,10 +170,7 @@ module.exports = (db, bucket) => {
             return res.status(400).send("No file uploaded");
         }
 
-        try {
-
-            const buffer = await pdf(req.file.buffer);
-            const pdfData = buffer.text;
+        try {            
 
             const readableStream = new Readable();
             readableStream.push(req.file.buffer);
@@ -187,9 +184,19 @@ module.exports = (db, bucket) => {
                     return res.status(500).send("File upload failed");
                 })
                 .on('finish', async() => {
-                    const response = await GetPdfDataAny(pdfData)
-                    //const data = await response.                  
-                    res.status(200).send({pdf : response});
+                    //const response = await GetPdfDataAny(pdfData)
+                    //const data = await response.
+                    const url = `https://isimg-pre-back.vercel.app/api/inspect/${uploadStream.id}`;
+                    const response = await fetch('https://isimg-dynamic-pdf.onrender.com/extract', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                        body: JSON.stringify({ pdf_url: url }),
+                    });
+
+                    const data = await response.json();
+                    res.status(200).send({pdf : JSON.stringify(data)});
                 });
 
         } catch (error) {
