@@ -8,8 +8,7 @@ const fileRoutes = require('./routes/pics');
 const { GridFSBucket } = require('mongodb');
 
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
 
 
 
@@ -21,6 +20,10 @@ const corsOptions = {
 };
 
 app.use(cors());
+app.options('*', cors());
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 (async () => {
     try {
