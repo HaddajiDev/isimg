@@ -11,3 +11,6 @@ pycparser==2.23
 PyMuPDF==1.26.6
 pypdfium2==5.0.0
 pytesseract==0.3.13
+Flask
+pdfplumber
+requests
