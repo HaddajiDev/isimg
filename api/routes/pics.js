@@ -165,6 +165,11 @@ module.exports = (db, bucket) => {
 
     //any
     router.post("/data/pdf/any", upload.single('file'), async (req, res) =>{
+
+        res.header('Access-Control-Allow-Origin', 'https://isimg.vercel.app');
+        res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
+
         
         if (!req.file) {
             return res.status(400).send("No file uploaded");
