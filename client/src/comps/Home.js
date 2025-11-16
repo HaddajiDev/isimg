@@ -6,7 +6,7 @@ import Credits from "./Credits"
 
 function Home() {
   const navigate = useNavigate()
-  const isFilierePersonnaliseeDisabled = false;
+  const isFilierePersonnaliseeDisabled = true;
   const handleNavigate = (path) => {
       if (path === "/dynamic-class" && isFilierePersonnaliseeDisabled) {
           return; 
