@@ -5,6 +5,7 @@ import Beams from './Backgrounds/Beams';
 import PdfFileUpload from './PdfFileUpload';
 import PdfInfoModal from './PdfInfoModal';
 import { useSelector } from 'react-redux';
+import { Center } from '@react-three/drei';
 
 
 const FeedbackButton = ({ phoneNumber, defaultMessage }) => {
@@ -27,8 +28,10 @@ const FeedbackButton = ({ phoneNumber, defaultMessage }) => {
             <p style={{ 
                 color: 'var(--text-secondary)', 
                 fontSize: '1rem', 
-                marginBottom: '10px' 
-            }}>
+                marginBottom: '10px', 
+                textAlign: Center,
+                
+            }} className='contactus-text'>
                 Problems? Send them over, we'll pretend to be serious:
             </p>
 
