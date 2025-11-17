@@ -789,3 +789,42 @@ p input {
 .pdf-container + .empty-state-card {
     margin-top: 30px;
 }
+
+
+
+.swal-dark-purple-bg {
+    background-color: #1a1a2e !important;
+    color: #ffffff !important;
+}
+
+.swal-dark-purple-btn {
+    background-color: #6c5ce7 !important; 
+    border: 1px solid #6c5ce7 !important;
+    color: white !important;
+    font-weight: bold;
+    margin: 0 5px;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.swal-dark-purple-btn:focus,
+.swal-dark-purple-btn:hover {
+    background-color: #5d48d6 !important;
+    border-color: #5d48d6 !important;
+}
+
+.swal-dark-purple-cancel-btn {
+    background-color: #dc3545 !important;
+    border: 1px solid #dc3545 !important;
+    color: white !important;
+    font-weight: bold;
+    margin: 0 5px;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.swal-dark-purple-cancel-btn:focus,
+.swal-dark-purple-cancel-btn:hover {
+    background-color: #c82333 !important;
+    border-color: #c82333 !important;
+}

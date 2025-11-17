@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import './lsim1.css';
 import Credits from './Credits';
 import Beams from './Backgrounds/Beams';
+import Swal from 'sweetalert2'; // Import SweetAlert2
 
 import FileUploadModal from './FileUploadModal';
 import PdfFileUpload from './PdfFileUpload';
@@ -11,7 +12,24 @@ import { useSelector } from 'react-redux';
 const LSIM2 = () => {
   const [activeSemester, setActiveSemester] = useState('sem1');
   
-  const [sem1, setSem1] = useState({
+  const getInitialState = (key, defaultState) => {
+    try {
+      const storedState = localStorage.getItem(key);
+      if (storedState) {
+        const parsedState = JSON.parse(storedState);
+        const floatState = {};
+        for (const [k, v] of Object.entries(parsedState)) {
+            floatState[k] = parseFloat(v) || 0;
+        }
+        return floatState;
+      }
+    } catch (e) {
+        console.error("Could not parse localStorage state for", key, e);
+    }
+    return defaultState;
+  };
+
+  const defaultSem1 = {
     probads: 0, probaex: 0, probatp: 0,
     automatesds: 0, automatesex: 0,
     graphesds: 0, graphesex: 0,
@@ -23,9 +41,9 @@ const LSIM2 = () => {
     gesds1: 0, gesds2: 0, gesoral: 0,
     webds: 0, webex: 0, webtp: 0,
     animationds: 0, animationex: 0, animationtp: 0,
-  });
+  };
 
-  const [sem2, setSem2] = useState({
+  const defaultSem2 = {
     numds: 0, numex: 0,
     tdids: 0, tdiex: 0, tditp: 0,
     igds: 0, igex: 0, igtp: 0,
@@ -38,7 +56,18 @@ const LSIM2 = () => {
     projetds1: 0, projetds2: 0, projettp: 0,
     web3ds: 0, web3ex: 0, web3tp: 0,
     crossds: 0, crossex: 0, crosstp: 0,
-  });
+  };
+
+  const [sem1, setSem1] = useState(() => getInitialState('lsim2_sem1', defaultSem1));
+  const [sem2, setSem2] = useState(() => getInitialState('lsim2_sem2', defaultSem2));
+
+  useEffect(() => {
+    localStorage.setItem('lsim2_sem1', JSON.stringify(sem1));
+  }, [sem1]);
+
+  useEffect(() => {
+    localStorage.setItem('lsim2_sem2', JSON.stringify(sem2));
+  }, [sem2]);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -48,6 +77,47 @@ const LSIM2 = () => {
       setSem1(prev => ({ ...prev, [id]: gradeValue }));
     } else {
       setSem2(prev => ({ ...prev, [id]: gradeValue }));
+    }
+  };
+
+  const handleReset = async () => {
+    const result = await Swal.fire({
+      title: "Reset grades",
+      text: "Press this and watch your grades disappear like they never existed.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "Nah",
+      customClass: {
+        popup: 'swal-dark-purple-bg',
+        confirmButton: 'swal-dark-purple-btn',
+        cancelButton: 'swal-dark-purple-cancel-btn'
+      },
+      buttonsStyling: false, 
+      color: '#ffffff', 
+      background: '#1a1a2e', 
+    });
+
+    if (result.isConfirmed) {
+      setSem1(defaultSem1);
+      setSem2(defaultSem2);
+      localStorage.removeItem('lsim2_sem1');
+      localStorage.removeItem('lsim2_sem2');
+      localStorage.removeItem('lsim2'); 
+      setError(null); 
+      
+      Swal.fire({
+        title: "History Deleted !",
+        text: "All grades erased. Time to start fresh… or panic.",
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+        customClass: {
+          popup: 'swal-dark-purple-bg',
+        },
+        color: '#ffffff',
+        background: '#1a1a2e',
+      });
     }
   };
 
@@ -95,7 +165,6 @@ const LSIM2 = () => {
   
   const sem2_total_coffs = coff_num + coff_tdi + coff_ig + coff_web2 + coff_appm + coff_ai + coff_test + coff_ang2 + coff_droit + coff_projet + coff_web3 + coff_cross;
 
-  // Subject Calculations (using sem2 state)
   const num = sem2.numds * 0.3 + sem2.numex * 0.7; 
   const tdi = sem2.tdids * 0.15 + sem2.tditp * 0.15 + sem2.tdiex * 0.7;
   const ig = sem2.igds * 0.15 + sem2.igtp * 0.15 + sem2.igex * 0.7;
@@ -138,84 +207,9 @@ const LSIM2 = () => {
 
   const [error, setError] = useState(null);
 
-  // const loadDataIntoInputs = (data) => {
-  //   try {
-  //     if (!Array.isArray(data)) {
-  //       throw new Error('Invalid data format: Expected an array of subjects');
-  //     }
+  const sem1Keys = useMemo(() => Object.keys(defaultSem1), []);
+  const sem2Keys = useMemo(() => Object.keys(defaultSem2), []);
   
-  //     const newSem1 = { ...sem1 };
-      
-  //     data.forEach(subject => {
-  //       if (typeof subject !== 'object' || subject === null) {
-  //         throw new Error('Invalid subject format: Expected an object');
-  //       }
-  
-  //       Object.entries(subject).forEach(([key, value]) => {
-  //         if (key === 'subject') return;
-  
-  //         if (!newSem1.hasOwnProperty(key)) {
-  //           throw new Error(`Unknown property detected: ${key}`);
-  //         }
-  
-  //         if (typeof value !== 'number') {
-  //           throw new Error(`Invalid value type for ${key}: Expected number, got ${typeof value}`);
-  //         }
-  
-  //         if (newSem1[key] === 0) {
-  //           newSem1[key] = value;
-  //         }
-  //       });
-  //     });
-  
-  //     setSem1(newSem1);
-  //     setError(null);
-  //   } catch (err) {
-  //     setError(err.message);
-  //     console.error('Data loading error:', err);
-  //   }
-  // };
-
-
-  // const loadDataIntoInputs_2 = (data) => {
-  //   try {
-  //     if (!Array.isArray(data)) {
-  //       throw new Error('Invalid data format: Expected an array of subjects');
-  //     }
-  
-  //     const newSem2 = { ...sem2 };
-      
-  //     data.forEach(subject => {
-  //       if (typeof subject !== 'object' || subject === null) {
-  //         throw new Error('Invalid subject format: Expected an object');
-  //       }
-  
-  //       Object.entries(subject).forEach(([key, value]) => {
-  //         if (key === 'subject') return;
-  
-  //         if (!newSem2.hasOwnProperty(key)) {
-  //           throw new Error(`Unknown property detected: ${key}`);
-  //         }
-  
-  //         if (typeof value !== 'number') {
-  //           throw new Error(`Invalid value type for ${key}: Expected number, got ${typeof value}`);
-  //         }
-  
-  //         if (newSem2[key] === 0) {
-  //           newSem2[key] = value;
-  //         }
-  //       });
-  //     });
-  
-  //     setSem2(newSem2);
-  //     setError(null);
-  //   } catch (err) {
-  //     setError(err.message);
-  //     console.error('Data loading error:', err);
-  //   }
-  // }
-  const sem1Keys = useMemo(() => Object.keys(sem1), []);
-  const sem2Keys = useMemo(() => Object.keys(sem2), []);
   const handleUnifiedDataLoad = (combinedData) => {
       try {
         if (!Array.isArray(combinedData)) {
@@ -268,7 +262,6 @@ const LSIM2 = () => {
       try {
         const initialData = JSON.parse(finalData);
         handleUnifiedDataLoad(initialData);
-        //activeSemester === "sem1" ? loadDataIntoInputs(initialData) : loadDataIntoInputs_2(initialData);
       } catch (parseError) {
         setError(`Invalid JSON format: ${parseError.message}`);
         console.error('JSON parsing error:', parseError);
@@ -348,6 +341,9 @@ const LSIM2 = () => {
             ?
           </button> 
         </div>
+
+        
+
         <FileUploadModal 
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}  
@@ -373,6 +369,24 @@ const LSIM2 = () => {
           )}
         
       </header>
+      <div style={{display: 'flex', marginRight: '40px',
+                justifyContent: 'end'}}>
+        <button 
+              style={{
+                marginTop: '30px', 
+                backgroundColor: 'transparent', 
+                border: '2px solid #dc3545', 
+                color: '#dc3545',
+                marginBottom: "30px",
+
+              }}
+              className=""
+              onClick={handleReset}
+            >
+              <span>Reset</span>     
+          </button>
+      </div>
+
 
       {activeSemester === 'sem1' &&       
       <form className="form-container">
@@ -384,6 +398,7 @@ const LSIM2 = () => {
             </b>
           </div>
         </fieldset>
+        
 
         <div className='warraper'>
           {renderSubjectFields("Probabilité", proba, [
