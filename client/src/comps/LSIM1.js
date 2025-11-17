@@ -6,6 +6,7 @@ import PdfFileUpload from './PdfFileUpload';
 import PdfInfoModal from './PdfInfoModal';
 import Beams from './Backgrounds/Beams';
 import Credits from './Credits';
+import Swal from 'sweetalert2';
 
 const LSIM1 = () => {
   const [activeSemester, setActiveSemester] = useState('sem1');
@@ -28,37 +29,27 @@ const LSIM1 = () => {
   };
 
   const defaultSem1 = {
-    // Mathématique
     dsa: 0, exa: 0,
     dsal: 0, exal: 0,
-    // Algorithmique & Programmation
     dsalo: 0, exalo: 0,
     dsprog: 0, exaprog: 0, tpprog: 0,
-    // Systèmes d'exploitation et architecture
     dsse: 0, exase: 0, tpse: 0,
     dssl: 0, examensl: 0, tpsl: 0,
-    // Logique et multimédia
     dslf: 0, exalf: 0,
     dsmm: 0, examm: 0, tpmm: 0,
-    // Langue
     oralang: 0, dsang: 0, ds2ang: 0,
     oralfr: 0, dsfr: 0, ds2fr: 0
   };
 
   const defaultSem2 = {
-    // Mathématique
     dsa: 0, exa: 0,
     dsal: 0, exal: 0,
-    // Algorithmique & Programmation
     dsalo: 0, exalo: 0,
     dsprog: 0, exaprog: 0, tpprog: 0,
     dsprogp: 0, exaprogp: 0, tpprogp: 0,
-    // Systèmes d'exploitation et architecture
     dsse: 0, exase: 0, tpse: 0,
     dssl: 0, tpsl: 0, examensl: 0,
-    // Fondements des bases de données
     dslf: 0, exalf: 0,
-    // Langue
     oralang: 0, dsang: 0, ds2ang: 0,
     oralfr: 0, dsfr: 0, ds2fr: 0,
     oralfrr: 0, dsfrr: 0, ds2frr: 0
@@ -87,14 +78,44 @@ const LSIM1 = () => {
     setSem2(prev => ({ ...prev, [id]: parseFloat(value) || 0 }));
   };
   
-  const handleReset = () => {
-    if (window.confirm("Êtes-vous sûr de vouloir réinitialiser toutes les notes pour les deux semestres ?")) {
+  const handleReset = async () => {
+    const result = await Swal.fire({
+      title: "Reset grades",
+      text: "Press this and watch your grades disappear like they never existed.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "Nah",
+      customClass: {
+        popup: 'swal-dark-purple-bg',
+        confirmButton: 'swal-dark-purple-btn',
+        cancelButton: 'swal-dark-purple-cancel-btn'
+      },
+      buttonsStyling: false,
+      color: '#ffffff',
+      background: '#1a1a2e',
+    });
+
+    if (result.isConfirmed) {
       setSem1(defaultSem1);
       setSem2(defaultSem2);
       localStorage.removeItem('lsim1_sem1');
       localStorage.removeItem('lsim1_sem2');
       localStorage.removeItem('lsim1'); 
-      setError(null);
+      setError(null); 
+      
+      Swal.fire({
+        title: "History Deleted !",
+        text: "All grades erased. Time to start fresh… or panic.",
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+        customClass: {
+          popup: 'swal-dark-purple-bg',
+        },
+        color: '#ffffff',
+        background: '#1a1a2e',
+      });
     }
   };
 
@@ -128,7 +149,7 @@ const LSIM1 = () => {
   const sem2_alo      = sem2.dsalo * 0.3 + sem2.exalo * 0.7;
   const sem2_prog     = sem2.dsprog * 0.15 + sem2.exaprog * 0.7 + sem2.tpprog * 0.15;
   const sem2_progp    = sem2.dsprogp * 0.15 + sem2.exaprogp * 0.7 + sem2.tpprogp * 0.15;
-  const sem2_info     = (sem2_prog * 1 + sem2_progp * 1 + 1.5 * sem2_alo) / 3.5; // Corrected denominator from 3.5 to 3.5 (1+1+1.5)
+  const sem2_info     = (sem2_prog * 1 + sem2_progp * 1 + 1.5 * sem2_alo) / 3.5;
 
   const sem2_se       = sem2.dsse  * 0.15 + sem2.exase  * 0.7 + sem2.tpse  * 0.15;
   const sem2_sl       = sem2.dssl  * 0.15 + sem2.examensl * 0.7 + sem2.tpsl  * 0.15;
@@ -270,13 +291,7 @@ const LSIM1 = () => {
             ?
           </button> 
         </div>
-        <button 
-            style={{marginTop: '30px', backgroundColor: '#dc3545', borderColor: '#dc3545'}} // Added a distinct style
-            className="btn-new"
-            onClick={handleReset}
-          >
-            <span>Réinitialiser les notes</span>     
-        </button>
+
         <FileUploadModal 
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}  
@@ -302,6 +317,24 @@ const LSIM1 = () => {
           )}
         
       </header>
+
+            <div style={{display: 'flex', marginRight: '40px',
+                justifyContent: 'end'}}>
+        <button 
+              style={{
+                marginTop: '30px', 
+                backgroundColor: 'transparent', 
+                border: '2px solid #dc3545', 
+                color: '#dc3545',
+                marginBottom: "30px",
+
+              }}
+              className=""
+              onClick={handleReset}
+            >
+              <span>Reset</span>     
+          </button>
+      </div>
       
       {activeSemester === 'sem1' && (
         <form className="form-container">
@@ -314,7 +347,6 @@ const LSIM1 = () => {
             </div>
           </fieldset>
           <div className='warraper'>
-            {/* Mathématique */}
             <fieldset>
                 <legend>Mathématique</legend>
                 <div className='section-overall'>Moyen : <b style={{ color: sem1_math < 10 ? 'red' : 'green' }}>{format(sem1_math)}</b></div>
@@ -376,7 +408,6 @@ const LSIM1 = () => {
                 </fieldset>
             </fieldset>
 
-            {/* Algorithmique & Programmation */}
             <fieldset>
                 <legend>Algorithmique & Programmation</legend>
                 <div className='section-overall'>Moyen : <b style={{ color: sem1_info < 10 ? 'red' : 'green' }}>{format(sem1_info)}</b></div>
@@ -450,7 +481,6 @@ const LSIM1 = () => {
                 </fieldset>
             </fieldset>
 
-            {/* Systèmes d'exploitation et architecture */}
             <fieldset>
                 <legend>Systèmes d'exploitation et architecture</legend>
                 <div className='section-overall'>Moyen : <b style={{ color: sem1_seg < 10 ? 'red' : 'green' }}>{format(sem1_seg)}</b></div>
@@ -536,7 +566,6 @@ const LSIM1 = () => {
                 </fieldset>
             </fieldset>
 
-            {/* Logique et multimédia */}
             <fieldset>
                 <legend>Logique et multimédia</legend>
                 <div className='section-overall'>Moyen : <b style={{ color: sem1_lm < 10 ? 'red' : 'green' }}>{format(sem1_lm)}</b></div>
@@ -610,7 +639,6 @@ const LSIM1 = () => {
                 </fieldset>
             </fieldset>
 
-            {/* Langue */}
             <fieldset>
                 <legend>Langue</legend>
                 <div className='section-overall'>Moyen : <b style={{ color: sem1_lang < 10 ? 'red' : 'green' }}>{format(sem1_lang)}</b></div>
@@ -707,7 +735,6 @@ const LSIM1 = () => {
            </div>
           </fieldset>
           <div className='warraper'>
-          {/* Mathématique */}
         <fieldset>
             <legend>Mathématique</legend>
             <div className='section-overall'>Moyen : <b style={{ color: sem2_math < 10 ? 'red' : 'green' }}>{format(sem2_math)}</b></div>
@@ -769,7 +796,6 @@ const LSIM1 = () => {
             </fieldset>
         </fieldset>
 
-          {/* Algorithmique & Programmation */}
           <fieldset>
             <legend>Algorithmique & Programmation</legend>
             <div className='section-overall'>Moyen : <b style={{ color: sem2_info < 10 ? 'red' : 'green' }}>{format(sem2_info)}</b></div>
@@ -883,7 +909,6 @@ const LSIM1 = () => {
             </fieldset>
           </fieldset>
 
-          {/* Systèmes d'exploitation et architecture */}
           <fieldset>
             <legend>Systèmes d'exploitation et architecture</legend>
             <div className='section-overall'>Moyen : <b style={{ color: sem2_seg < 10 ? 'red' : 'green' }}>{format(sem2_seg)}</b></div>
@@ -969,7 +994,6 @@ const LSIM1 = () => {
             </fieldset>
           </fieldset>
 
-          {/* Fondements des bases de données */}
           <fieldset>
             <legend>Fondements des bases de données</legend>
             <fieldset>
@@ -1002,7 +1026,6 @@ const LSIM1 = () => {
             </fieldset>
           </fieldset>
 
-          {/* Langue */}
           <fieldset>            
             <legend>Langue</legend>
             <div className='section-overall'>Moyen : <b style={{ color: sem2_lang < 10 ? 'red' : 'green' }}>{format(sem2_lang)}</b></div>
