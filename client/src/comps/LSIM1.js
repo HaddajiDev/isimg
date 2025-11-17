@@ -10,7 +10,24 @@ import Credits from './Credits';
 const LSIM1 = () => {
   const [activeSemester, setActiveSemester] = useState('sem1');
 
-  const [sem1, setSem1] = useState({
+  const getInitialState = (key, defaultState) => {
+    try {
+      const storedState = localStorage.getItem(key);
+      if (storedState) {
+        const parsedState = JSON.parse(storedState);
+        const floatState = {};
+        for (const [k, v] of Object.entries(parsedState)) {
+            floatState[k] = parseFloat(v) || 0;
+        }
+        return floatState;
+      }
+    } catch (e) {
+      console.error("Could not parse localStorage state for", key, e);
+    }
+    return defaultState;
+  };
+
+  const defaultSem1 = {
     // Mathématique
     dsa: 0, exa: 0,
     dsal: 0, exal: 0,
@@ -26,9 +43,9 @@ const LSIM1 = () => {
     // Langue
     oralang: 0, dsang: 0, ds2ang: 0,
     oralfr: 0, dsfr: 0, ds2fr: 0
-  });
+  };
 
-  const [sem2, setSem2] = useState({
+  const defaultSem2 = {
     // Mathématique
     dsa: 0, exa: 0,
     dsal: 0, exal: 0,
@@ -45,7 +62,20 @@ const LSIM1 = () => {
     oralang: 0, dsang: 0, ds2ang: 0,
     oralfr: 0, dsfr: 0, ds2fr: 0,
     oralfrr: 0, dsfrr: 0, ds2frr: 0
-  });
+  };
+
+  const [sem1, setSem1] = useState(() => getInitialState('lsim1_sem1', defaultSem1));
+  const [sem2, setSem2] = useState(() => getInitialState('lsim1_sem2', defaultSem2));
+
+
+  useEffect(() => {
+    localStorage.setItem('lsim1_sem1', JSON.stringify(sem1));
+  }, [sem1]);
+
+  useEffect(() => {
+    localStorage.setItem('lsim1_sem2', JSON.stringify(sem2));
+  }, [sem2]);
+
 
   const handleSem1Change = (e) => {
     const { id, value } = e.target;
@@ -56,6 +86,18 @@ const LSIM1 = () => {
     const { id, value } = e.target;
     setSem2(prev => ({ ...prev, [id]: parseFloat(value) || 0 }));
   };
+  
+  const handleReset = () => {
+    if (window.confirm("Êtes-vous sûr de vouloir réinitialiser toutes les notes pour les deux semestres ?")) {
+      setSem1(defaultSem1);
+      setSem2(defaultSem2);
+      localStorage.removeItem('lsim1_sem1');
+      localStorage.removeItem('lsim1_sem2');
+      localStorage.removeItem('lsim1'); 
+      setError(null);
+    }
+  };
+
 
   const sem1_ana      = sem1.dsa   * 0.3 + sem1.exa   * 0.7;
   const sem1_algebre  = sem1.dsal  * 0.3 + sem1.exal  * 0.7;
@@ -86,7 +128,7 @@ const LSIM1 = () => {
   const sem2_alo      = sem2.dsalo * 0.3 + sem2.exalo * 0.7;
   const sem2_prog     = sem2.dsprog * 0.15 + sem2.exaprog * 0.7 + sem2.tpprog * 0.15;
   const sem2_progp    = sem2.dsprogp * 0.15 + sem2.exaprogp * 0.7 + sem2.tpprogp * 0.15;
-  const sem2_info     = (sem2_prog + sem2_progp + 1.5 * sem2_alo) / 3.5;
+  const sem2_info     = (sem2_prog * 1 + sem2_progp * 1 + 1.5 * sem2_alo) / 3.5; // Corrected denominator from 3.5 to 3.5 (1+1+1.5)
 
   const sem2_se       = sem2.dsse  * 0.15 + sem2.exase  * 0.7 + sem2.tpse  * 0.15;
   const sem2_sl       = sem2.dssl  * 0.15 + sem2.examensl * 0.7 + sem2.tpsl  * 0.15;
@@ -108,15 +150,16 @@ const LSIM1 = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const data = useSelector(state => state.file.data);  
   const finalData = data ? data : localStorage.getItem("lsim1");
+
   const [error, setError] = useState(null);
 
-  const loadDataIntoInputs = (data) => {
+  const loadDataIntoInputs = (data, setter, defaultState) => {
     try {
       if (!Array.isArray(data)) {
         throw new Error('Invalid data format: Expected an array of subjects');
       }
   
-      const newSem1 = { ...sem1 };
+      const newState = { ...defaultState };
       
       data.forEach(subject => {
         if (typeof subject !== 'object' || subject === null) {
@@ -126,7 +169,7 @@ const LSIM1 = () => {
         Object.entries(subject).forEach(([key, value]) => {
           if (key === 'subject') return;
   
-          if (!newSem1.hasOwnProperty(key)) {
+          if (!newState.hasOwnProperty(key)) {
             throw new Error(`Unknown property detected: ${key}`);
           }
   
@@ -134,13 +177,16 @@ const LSIM1 = () => {
             throw new Error(`Invalid value type for ${key}: Expected number, got ${typeof value}`);
           }
   
-          if (newSem1[key] === 0) {
-            newSem1[key] = value;
-          }
+
+          setter(prev => {
+            if (prev[key] === 0) {
+              return { ...prev, [key]: value };
+            }
+            return prev;
+          });
         });
       });
   
-      setSem1(newSem1);
       setError(null);
     } catch (err) {
       setError(err.message);
@@ -149,55 +195,21 @@ const LSIM1 = () => {
   };
 
 
-  const loadDataIntoInputs_2 = (data) => {
-    try {
-      if (!Array.isArray(data)) {
-        throw new Error('Invalid data format: Expected an array of subjects');
-      }
-  
-      const newSem2 = { ...sem2 };
-      
-      data.forEach(subject => {
-        if (typeof subject !== 'object' || subject === null) {
-          throw new Error('Invalid subject format: Expected an object');
-        }
-  
-        Object.entries(subject).forEach(([key, value]) => {
-          if (key === 'subject') return;
-  
-          if (!newSem2.hasOwnProperty(key)) {
-            throw new Error(`Unknown property detected: ${key}`);
-          }
-  
-          if (typeof value !== 'number') {
-            throw new Error(`Invalid value type for ${key}: Expected number, got ${typeof value}`);
-          }
-  
-          if (newSem2[key] === 0) {
-            newSem2[key] = value;
-          }
-        });
-      });
-  
-      setSem2(newSem2);
-      setError(null);
-    } catch (err) {
-      setError(err.message);
-      console.error('Data loading error:', err);
-    }
-  }
+  const loadDataIntoInputs_1 = (data) => loadDataIntoInputs(data, setSem1, defaultSem1);
+  const loadDataIntoInputs_2 = (data) => loadDataIntoInputs(data, setSem2, defaultSem2);
+
   
   useEffect(() => {
     if (finalData) {
       try {
-        const initialData = JSON.parse(data);
-        activeSemester === "sem1" ? loadDataIntoInputs(initialData) : loadDataIntoInputs_2(initialData);
+        const initialData = JSON.parse(finalData); 
+        activeSemester === "sem1" ? loadDataIntoInputs_1(initialData) : loadDataIntoInputs_2(initialData);
       } catch (parseError) {
         setError(`Invalid JSON format: ${parseError.message}`);
         console.error('JSON parsing error:', parseError);
       }
     }
-  }, [finalData]);
+  }, [finalData, activeSemester]); 
 
   const [isOpenPdf, setIsOpenPdf] = useState(false);
   const [showPdfInfo, setShowPdfInfo] = useState(false);
@@ -258,6 +270,13 @@ const LSIM1 = () => {
             ?
           </button> 
         </div>
+        <button 
+            style={{marginTop: '30px', backgroundColor: '#dc3545', borderColor: '#dc3545'}} // Added a distinct style
+            className="btn-new"
+            onClick={handleReset}
+          >
+            <span>Réinitialiser les notes</span>     
+        </button>
         <FileUploadModal 
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}  
