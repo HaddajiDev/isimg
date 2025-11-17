@@ -9,18 +9,14 @@ const { GridFSBucket } = require('mongodb');
 
 const app = express();
 
-
-
-
 const corsOptions = {
-    origin: "*",
+    origin: ["https://isimg.vercel.app", "https://isimg-preview.vercel.app"],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Range']
 };
 
-app.use(cors());
-app.options('*', cors());
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
