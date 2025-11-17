@@ -828,3 +828,8 @@ p input {
     background-color: #c82333 !important;
     border-color: #c82333 !important;
 }
+
+.swal-dark-purple-btn,
+.swal-dark-purple-cancel-btn {
+    margin-bottom: 15px; 
+}

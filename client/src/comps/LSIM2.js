@@ -369,7 +369,7 @@ const LSIM2 = () => {
           )}
         
       </header>
-      <div style={{display: 'flex', marginRight: '40px',
+      <div style={{display: 'flex',
                 justifyContent: 'end'}}>
         <button 
               style={{
