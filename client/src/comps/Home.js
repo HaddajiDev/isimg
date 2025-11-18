@@ -3,6 +3,7 @@ import "./home.css"
 import { useNavigate } from "react-router-dom"
 import Silk from "./Backgrounds/Silk"
 import Credits from "./Credits"
+import PrismaticBurst from "./Backgrounds/PrismaticBurst"
 
 function Home() {
   const navigate = useNavigate()
@@ -16,11 +17,26 @@ function Home() {
   return (
     <div className="over">
       <div className="silk-container">
+        {/* <PrismaticBurst
+            animationType="rotate3d"
+            intensity={0.2}
+            speed={0.5}
+            distort={0}
+            paused={false}
+            offset={{ x: 0, y: 0 }}
+            hoverDampness={0.25}
+            rayCount={0}
+            mixBlendMode="none"
+            colors={['#6c5ce7', '#6c5ce7', '#6c5ce7']}
+          /> */}
+
+          {/* {} */}
+
         <Silk
-            speed={5}
-            scale={1}
-            color="#9370DB"
-            noiseIntensity={1.5}
+            speed={7}
+            scale={1.1}
+            color="#6c5ce7"
+            noiseIntensity={1}
             rotation={0}
         />
       </div>

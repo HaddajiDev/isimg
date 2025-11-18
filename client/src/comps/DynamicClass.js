@@ -149,6 +149,17 @@ const DynamicClass = () => {
         }
     }, [finalData]);
 
+    useEffect(() => {
+        if (dynamicData) {
+            try {
+                const dataString = JSON.stringify(dynamicData);
+                localStorage.setItem("any", dataString);
+            } catch (e) {
+                console.error("Error saving to localStorage:", e);
+            }
+        }
+    }, [dynamicData]);
+
     const handleChange = useCallback((semesterKey, subjectIndex, noteKey, value) => {
         const gradeValue = parseFloat(value) || 0;
         
