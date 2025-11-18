@@ -30,6 +30,8 @@ function Home() {
             colors={['#6c5ce7', '#6c5ce7', '#6c5ce7']}
           /> */}
 
+          {/* {} */}
+
         <Silk
             speed={7}
             scale={1.1}
