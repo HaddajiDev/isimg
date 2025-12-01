@@ -187,7 +187,7 @@ module.exports = (db, bucket) => {
                     //const response = await GetPdfDataAny(pdfData)
                     //const data = await response.
                     const url = `https://isimg-pre-back.vercel.app/api/inspect/${uploadStream.id}`;
-                    const response = await fetch('https://isimg-dynamic.onrender.com//extract', {
+                    const response = await fetch('https://isimg-dynamic.onrender.com/extract', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
