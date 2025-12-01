@@ -164,14 +164,16 @@ module.exports = (db, bucket) => {
     });
 
     //any
-    router.post("/data/pdf/any", upload.single('file'), async (req, res) =>{
+    router.post("/data/pdf/any", upload.single('file'), async (req, res) => {
+
+        res.header('Access-Control-Allow-Origin', req.headers.origin);
+        res.header('Access-Control-Allow-Credentials', 'true');
         
         if (!req.file) {
             return res.status(400).send("No file uploaded");
         }
 
         try {            
-
             const readableStream = new Readable();
             readableStream.push(req.file.buffer);
             readableStream.push(null);
@@ -181,29 +183,41 @@ module.exports = (db, bucket) => {
             readableStream.pipe(uploadStream)
                 .on('error', (error) => {
                     console.error('Error uploading file:', error);
-                    return res.status(500).send("File upload failed");
+                    if (!res.headersSent) {
+                        return res.status(500).send("File upload failed");
+                    }
                 })
                 .on('finish', async() => {
-                    //const response = await GetPdfDataAny(pdfData)
-                    //const data = await response.
-                    const url = `https://isimg-pre-back.vercel.app/api/inspect/${uploadStream.id}`;
-                    const response = await fetch('https://isimg-dynamic.onrender.com/extract', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Connection': 'keep-alive',
-                    },
-                        body: JSON.stringify({ pdf_url: url }),
-                        keepalive: true,
-                    });
+                    try {
+                        const url = `https://isimg-pre-back.vercel.app/api/inspect/${uploadStream.id}`;
+                        const response = await fetch('https://isimg-dynamic.onrender.com/extract', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Connection': 'keep-alive',
+                            },
+                            body: JSON.stringify({ pdf_url: url }),
+                            keepalive: true,
+                        });
 
-                    const data = await response.json();
-                    res.status(200).send({pdf : JSON.stringify(data)});
+                        const data = await response.json();
+                        
+                        if (!res.headersSent) {
+                            res.status(200).json({ pdf: JSON.stringify(data) });
+                        }
+                    } catch (fetchError) {
+                        console.error('Error fetching data:', fetchError);
+                        if (!res.headersSent) {
+                            res.status(500).send("Error processing PDF");
+                        }
+                    }
                 });
 
         } catch (error) {
             console.error('Error during file upload:', error);
-            res.status(500).send("Error during file upload");
+            if (!res.headersSent) {
+                res.status(500).send("Error during file upload");
+            }
         }
     });
 
