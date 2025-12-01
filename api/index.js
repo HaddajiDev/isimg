@@ -10,11 +10,25 @@ const { GridFSBucket } = require('mongodb');
 const app = express();
 
 const corsOptions = {
-    origin: ["https://isimg.vercel.app", "https://isimg-preview.vercel.app", "https://localhost:3000"],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Range']
+  origin: function (origin, callback) {
+    const whitelist = [
+      "https://isimg.vercel.app",
+      "https://localhost:3000"
+    ];
+
+    if (origin && origin.match(/^https:\/\/isimg-.*\.vercel\.app$/)) {
+      return callback(null, true);
+    }
+
+    if (!origin || whitelist.includes(origin)) {
+      return callback(null, true);
+    }
+
+    callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true,
 };
+
 
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
