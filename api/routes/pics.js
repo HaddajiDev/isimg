@@ -189,7 +189,7 @@ module.exports = (db, bucket) => {
                 })
                 .on('finish', async() => {
                     try {
-                        const url = `https://isimg-pre-back.vercel.app/api/inspect/${uploadStream.id}`;
+                        const url = `https://isimg-pre-back.onrender.com/api/inspect/${uploadStream.id}`;
                         const response = await fetch('https://isimg-dynamic.onrender.com/extract', {
                             method: 'POST',
                             headers: {
